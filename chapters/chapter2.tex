@@ -1,0 +1,49 @@
+\chapter{(TODO: name)}
+\section{Source engine dedicated servers}
+
+Valve's game engine, Source, is the engine behind many popular titles such as Counter-Strike: Global Offensive or Team Fortress 2.
+It allows for running headless instances of any of its games, internally called \textit{mods}, through their Source Dedicated Server tool (srcds) on Linux, Windows and MacOS.
+The server file structure is similar to one of client's:
+\begin{itemize}
+    \item \textbf{bin} -- TODO,
+    \item \textbf{mod} -- abbreviated name of the mod, stores assets like maps or models,
+    \item \textbf{mod/addon} -- directory for third-party extensions,
+    \item \textbf{srcds} -- server instance binary.
+\end{itemize}
+Under \textit{addons}, each directory corresponds to a different extension, which are C++ libraries that modify the behavior of the server (TODO: cite valvesoftware wiki).
+The Source engine exposes a set of interfaces they may interact with, for instance capture an event of a player connecting.
+The caveats of this approach are twofold:
+\begin{enumerate}
+\item
+The API that the Source engine provides is very bare bones and lacking features often required in servers of any kind, such as external database querying.
+This leaves the developer to implement their own solutions, which may unnecessarily vary from one extension to another.
+\item
+The fact that extensions are natively built C++ libraries forces the developer to write and provide support for platform-dependent code.
+\end{enumerate}
+SourceMod seeks to alleviate these problems by wrapping the underlying C++ API with its own, exposed in a simple scripting language called SourcePawn.
+Developing a SourceMod plugin allows programmers to extend the functionality of Source servers in OS-agnostic way.
+On top of that, the new API provides them with more tools than just server behavior.
+Developers are granted features such as a MySQL database driver or a parser for Valve-specific configuration files right from the base API.
+
+\section{SourceMod as platform for extensibility}
+
+Installing SourceMod is simply extracting its archive into \textbf{mod/addons/}, after which \textbf{mod/addons/sourcemod/} should look as follows:
+\begin{itemize}
+    \item \textbf{bin} -- SourceMod specific binaries,
+    \item \textbf{cfg} -- configuration files for plugins or extensions,
+    \item \textbf{plugins} -- plugin binaries,
+    \item \textbf{extensions} -- extension binaries,
+    \item \textbf{gamedata} -- text files storing game's variable memory offsets and function signatures to be shared across plugins for more complex extensibility capabilities,
+    \item \textbf{scripting} -- plugin sources and the SourcePawn compiler,
+    \item \textbf{translations} -- text files storing phrases for localization.
+\end{itemize}
+
+A plugin is a binary compiled by the SourcePawn compiler, it is independent of the operating system and handled exclusively by SourceMod.
+An extension is required for low-level control which goes beyond the scope of plugins, which in itself is very rare.
+Both plugins and extensions are loaded by SourceMod, but the latter are C++ libraries and thus system-dependent.
+For example, a plugin is a menu pop-up in the game, while an extension is a database driver.
+
+In relation to the aforementioned directory structure, SourceMod expects a sort of order, either by convention or API requirements.
+A plugin loads localization only from \textbf{translations}, or function signatures from \textbf{gamedata}.
+Ultimately, it is up to the plugin what to do and where to load its files from.
+For instance, if a plugin comes bundled with assets, those usually are not placed in the SourceMod directory, but rather two directories up and across.
