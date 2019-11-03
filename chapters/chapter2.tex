@@ -39,11 +39,24 @@ Installing SourceMod is simply extracting its archive into \textbf{mod/addons/},
 \end{itemize}
 
 A plugin is a binary compiled by the SourcePawn compiler, it is independent of the operating system and handled exclusively by SourceMod.
-An extension is required for low-level control which goes beyond the scope of plugins, which in itself is very rare.
+An extension is required for low-level control which goes beyond the scope of plugins, which in practise is very rare.
 Both plugins and extensions are loaded by SourceMod, but the latter are C++ libraries and thus system-dependent.
 For example, a plugin is a menu pop-up in the game, while an extension is a database driver.
 
 In relation to the aforementioned directory structure, SourceMod expects a sort of order, either by convention or API requirements.
 A plugin loads localization only from \textbf{translations}, or function signatures from \textbf{gamedata}.
 Ultimately, it is up to the plugin what to do and where to load its files from.
-For instance, if a plugin comes bundled with assets, those usually are not placed in the SourceMod directory, but rather two directories up and across.
+For instance, if it comes bundled with assets, those usually are not placed in the SourceMod directory at all, but rather two directories up, alongside server files.
+
+Considering a server is usually on a remote machine, it becomes cumbersome to download and install each file in its appropriate directory through CLI.
+The operator resolves to downloading the plugin to their computer, then using an FTP client to send the files over.
+This process is not ideal and graphical approaches are not very flexible nor extensible.
+Furthermore, it certainly cannot be automated, given there exists no standard on how to publish plugins.
+
+When a novice wishes to install a plugin, they must resolve to looking up instructions provided by the author.
+These are usually found in a readme file that comes with it, or posted on a website where it was published.
+The most common of such websites are the official forums -- AlliedModders.
+Developers write a post in an appropriate section with general information and installation instructions, and attach plugin files or a packaged archive.
+By no means this is enforced.
+The developer is free to omit any of these steps, even publish their work on other sites, like GitHub, if it suits them better.
+Undoubtedly, this adds yet additional overhead from the server operator perspective.
