@@ -60,3 +60,22 @@ Developers write a post in an appropriate section with general information and i
 By no means this is enforced.
 The developer is free to omit any of these steps, even publish their work on other sites, like GitHub, if it suits them better.
 Undoubtedly, this adds yet additional overhead from the server operator perspective.
+
+\section{Package managers}
+
+Package managers are administrative tools which automate installation of software packages.
+Their goal is to download a set of files constituting a package, place them correct directories and keep track of them.
+Along with that automation come three perks, which are missing from the SourceMod community:
+\begin{itemize}
+    \item simplifying the installation process to a single command,
+    \item automatically resolving potential dependencies on other packages,
+    \item standardizing the process of distribution.
+\end{itemize}
+
+The latter is usually thanks to a database associated with the package manager (TODO: cite).
+It provides the metadata on how to deal with a package, whether that be installation, removal, building from source or resolving dependencies.
+This makes most package managers dependent on external sources of information, either official or third-party.
+An important thing to note here is that such database is available right from the inception of the corresponding package manager.
+Implementing exactly the same solution for SourceMod plugins would force all the developers to update their mean of distribution, should they want to make use of it.
+Considering the community is over ten years old, this severely undermines the usefulness of a dedicated package manager.
+However, the developer needs only to be in charge of the files, not unnecessarily the metadata.
