@@ -1,24 +1,36 @@
 \chapter{(TODO: name)}
 \section{Source engine dedicated servers}
 
-Valve's game engine, Source, is the engine behind many popular titles such as Counter-Strike: Global Offensive or Team Fortress 2.
+Valve's game engine, Source, is the engine behind many popular titles such as Half-Life 2, Counter-Strike: Global Offensive or Team Fortress 2 (TODO: refernce games).
 It allows for running headless instances of any of its games, internally called \textit{mods}, through their Source Dedicated Server tool (srcds) on Linux, Windows and MacOS.
-The server file structure is similar to one of client's:
+The term \textit{mods} comes from the fact that originally all games started as extensions of the base game -- Half-Life 2.
+
+The directory structure is the most relevant aspect of the server and both convention and the engine enforce placement of files in specific directories.
+In the root of the server the most relevant are:
 \begin{itemize}
     \item \textbf{bin} -- TODO,
-    \item \textbf{mod} -- abbreviated name of the mod, stores assets like maps or models,
-    \item \textbf{mod/addon} -- directory for third-party extensions,
-    \item \textbf{srcds} -- server instance binary.
+    \item \textbf{\textit{mod}} -- abbreviated name of the mod, stores game specific assets,
+    \item \textbf{hl2} -- assets from the base game, Half-Life 2,
+    \item \textbf{cfg} -- configuration presets for the game and server extensions.
 \end{itemize}
-Under \textit{addons}, each directory corresponds to a different extension, which are C++ libraries that modify the behavior of the server \cite{server-plugins}.
-The Source engine exposes a set of interfaces they may interact with, for instance capture an event of a player connecting.
-The caveats of this approach are twofold:
+Under \textbf{\textit{mod}}, there exists another structure.
+Most of them group different kinds of assets, such as models, textures.
+The noteworthy directory is \textbf{addons}.
+In it, each folder corresponds to different extensions, C++ libraries that modify the behavior of the server \cite{server-plugins}.
+
+Source engine exposes a set of interfaces they may interact with, for instance, capture an event of a player connecting.
+Unfortunately, these interfaces are the only API an extension may safely use.
+Interacting with server classes is possible, but not without hacking (TODO: paraphrase).
+Afterwards, the developer needs to build the extension along with the Source SDK of an appropriate platform.
+
+The caveats of extension development are twofold:
 \begin{enumerate}
 \item
 The API that the Source engine provides is very bare bones and lacking features often required in servers of any kind, such as external database querying.
 This leaves the developer to implement their own solutions, which may unnecessarily vary from one extension to another.
 \item
 The fact that extensions are natively built C++ libraries forces the developer to write and provide support for platform-dependent code.
+Using different SDK's across platforms adds great overhead to both development and compiling.
 \end{enumerate}
 SourceMod seeks to alleviate these problems by wrapping the underlying C++ API with its own, exposed in a simple scripting language called SourcePawn.
 Developing a SourceMod plugin allows programmers to extend the functionality of Source servers in OS-agnostic way.
@@ -64,7 +76,7 @@ Undoubtedly, this adds yet additional overhead from the server operator perspect
 \section{Package managers}
 
 Package managers are administrative tools which automate installation of software packages.
-Their goal is to download a set of files constituting a package, place them correct directories and keep track of them.
+Their goal is to download a set of files constituting a package, place them in correct directories and keep track of them.
 Along with that automation come three perks, which are missing from the SourceMod community:
 \begin{itemize}
     \item simplifying the installation process to a single command,
@@ -75,7 +87,9 @@ Along with that automation come three perks, which are missing from the SourceMo
 The latter is usually thanks to a database associated with the package manager (TODO: cite).
 It provides the metadata on how to deal with a package, whether that be installation, removal, building from source or resolving dependencies.
 This makes most package managers dependent on external sources of information, either official or third-party.
-An important thing to note here is that such database is available right from the inception of the corresponding package manager.
-Implementing exactly the same solution for SourceMod plugins would force all the developers to update their mean of distribution, should they want to make use of it.
+An important thing to note here is that a database is available right from the inception of the corresponding package manager.
+
+Implementing exactly the same solution for SourceMod plugins would force all developers to update their mean of distribution, should they want to make use of it.
 Considering the community is over ten years old, this severely undermines the usefulness of a dedicated package manager.
-However, the developer needs only to be in charge of the files, not unnecessarily the metadata.
+The developer must be in charge of the files, but not necessarily the metadata.
+And the database does not need to host the files.
