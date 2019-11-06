@@ -6,22 +6,22 @@ It allows for running headless instances of any of its games, internally called 
 The term \textit{mods} comes from the fact that originally all games started as extensions of the base game -- Half-Life 2.
 
 The directory structure is the most relevant aspect of the server and both convention and the engine enforce placement of files in specific directories.
-In the root of the server the most relevant are:
+In the root of the server the most important ones are:
 \begin{itemize}
     \item \textbf{bin} -- TODO,
     \item \textbf{\textit{mod}} -- abbreviated name of the mod, stores game specific assets,
     \item \textbf{hl2} -- assets from the base game, Half-Life 2,
     \item \textbf{cfg} -- configuration presets for the game and server extensions.
 \end{itemize}
-Under \textbf{\textit{mod}}, there exists another structure.
-Most of them group different kinds of assets, such as models, textures.
+Under \textbf{\textit{mod}}, there exists another structure, mostly to group different kinds of assets, like models, textures.
 The noteworthy directory is \textbf{addons}.
 In it, each folder corresponds to different extensions, C++ libraries that modify the behavior of the server \cite{server-plugins}.
 
 Source engine exposes a set of interfaces they may interact with, for instance, capture an event of a player connecting.
 Unfortunately, these interfaces are the only API an extension may safely use.
-Interacting with server classes is possible, but not without hacking (TODO: paraphrase).
-Afterwards, the developer needs to build the extension along with the Source SDK of an appropriate platform.
+Interacting with server classes is possible, but not without risks.
+Afterwards, the developer needs to build the extension along with the Source SDK.
+Setting up the environment may be challenging as there are separate releases for each of the platforms.
 
 The caveats of extension development are twofold:
 \begin{enumerate}
@@ -30,16 +30,16 @@ The API that the Source engine provides is very bare bones and lacking features 
 This leaves the developer to implement their own solutions, which may unnecessarily vary from one extension to another.
 \item
 The fact that extensions are natively built C++ libraries forces the developer to write and provide support for platform-dependent code.
-Using different SDK's across platforms adds great overhead to both development and compiling.
+Using different SDK's across platforms adds great overhead to both development and deployment.
 \end{enumerate}
 SourceMod seeks to alleviate these problems by wrapping the underlying C++ API with its own, exposed in a simple scripting language called SourcePawn.
-Developing a SourceMod plugin allows programmers to extend the functionality of Source servers in OS-agnostic way.
-On top of that, the new API provides them with more tools than just server behavior.
+Developing a SourceMod plugin allows programmers to extend the functionality of game servers in OS-agnostic way.
+On top of that, the new API provides them with more tools beyond than just altering server behavior.
 Developers are granted features such as a MySQL database driver or a parser for Valve-specific configuration files right from the base API.
 
 \section{SourceMod as platform for extensibility}
 
-Installing SourceMod is simply extracting its archive into \textbf{mod/addons/}, after which \textbf{mod/addons/sourcemod/} should look as follows:
+Installing SourceMod is as simple as extracting its archive into \textbf{mod/addons/}, after which \textbf{mod/addons/sourcemod/} will look as follows:
 \begin{itemize}
     \item \textbf{bin} -- SourceMod specific binaries,
     \item \textbf{cfg} -- configuration files for plugins or extensions,
@@ -53,21 +53,21 @@ Installing SourceMod is simply extracting its archive into \textbf{mod/addons/},
 A plugin is a binary compiled by the SourcePawn compiler, it is independent of the operating system and handled exclusively by SourceMod.
 An extension is required for low-level control which goes beyond the scope of plugins, which in practise is very rare.
 Both plugins and extensions are loaded by SourceMod, but the latter are C++ libraries and thus system-dependent.
-For example, a plugin is a menu pop-up in the game, while an extension is a database driver.
+To give an example, a plugin is a menu pop-up in the game, while an extension is a database driver.
 
-In relation to the aforementioned directory structure, SourceMod expects a sort of order, either by convention or API requirements.
+In relation to the aforementioned directory structure and Source engine conventions, SourceMod expects a sort of order.
 A plugin loads localization only from \textbf{translations}, or function signatures from \textbf{gamedata}.
 Ultimately, it is up to the plugin what to do and where to load its files from.
-For instance, if it comes bundled with assets, those usually are not placed in the SourceMod directory at all, but rather two directories up, alongside server files.
+For instance, if it comes bundled with assets, they usually are not placed in the SourceMod directory at all, but rather two directories up, alongside server files.
 
 Considering a server is usually on a remote machine, it becomes cumbersome to download and install each file in its appropriate directory through CLI.
-The operator resolves to downloading the plugin to their computer, then using an FTP client to send the files over.
+Operators understandably resolve to downloading the plugin to their computers, then using an FTP client to send the files over.
 This process is not ideal and graphical approaches are not very flexible nor extensible.
-Furthermore, it certainly cannot be automated, given there exists no standard on how to publish plugins.
+Furthermore, it is problematic to automate, given there exists no standard on how to distribute plugins.
 
 When a novice wishes to install a plugin, they must resolve to looking up instructions provided by the author.
 These are usually found in a readme file that comes with it, or posted on a website where it was published.
-The most common of such websites are the official forums -- AlliedModders.
+The most common of such websites are the official forums -- AlliedModders \cite{alliedmodders-plugins}.
 Developers write a post in an appropriate section with general information and installation instructions, and attach plugin files or a packaged archive.
 By no means this is enforced.
 The developer is free to omit any of these steps, even publish their work on other sites, like GitHub, if it suits them better.
@@ -85,11 +85,11 @@ Along with that automation come three perks, which are missing from the SourceMo
 \end{itemize}
 
 The latter is usually thanks to a database associated with the package manager (TODO: cite).
-It provides the metadata on how to deal with a package, whether that be installation, removal, building from source or resolving dependencies.
+It provides the metadata on how to deal with a package, whether it would be its installation, removal, building from source or resolving dependencies.
 This makes most package managers dependent on external sources of information, either official or third-party.
 An important thing to note here is that a database is available right from the inception of the corresponding package manager.
 
 Implementing exactly the same solution for SourceMod plugins would force all developers to update their mean of distribution, should they want to make use of it.
 Considering the community is over ten years old, this severely undermines the usefulness of a dedicated package manager.
 The developer must be in charge of the files, but not necessarily the metadata.
-And the database does not need to host the files.
+However, the database does not need to host the files.
