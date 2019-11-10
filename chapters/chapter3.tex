@@ -1,0 +1,54 @@
+\chapter{Solution}
+
+\section{Current Publishing Conventions}
+
+Although there is no set standard on how to publish plugins, conventions have emerged over time.
+Taking advantage of them is the first step towards standardizing distribution.
+
+There are three websites where either the important ones or the majority of plugins are found:
+\begin{itemize}
+    \item \textbf{AlliedModders forums} -- official forums of SourceMod, usually there exists a corresponding thread, regardless where the files are hosted,
+    \item \textbf{GitHub} -- preferred by some developers, either to upload binaries directly to repositories or have them posted in the \textit{Releases} section,
+    \item \textbf{LimeTech} -- third-party website hosting high-traffic SourceMod extensions, owned by one of the major contributors.
+\end{itemize}
+
+\subsection{AlliedModders forums}
+
+The official forums are the main source of advertising for developers, thus a sure way to find plugins.
+A thread dedicated to a release of one, either hosts the files as its attachments or instructs readers where to download them from.
+All addons posted on the forums must adhere to the SourceMod license, GNU General Public License, version 3.
+This license applies to derivative works as well, that is SourceMod plugins and extensions \cite{sourcemod-license}.
+This means that source must be provided along with distribution.
+
+Because of this the forums have a unique feature available to developers when posting their work.
+If a file is the source of a plugin (\textit{.sp} extension), it will automatically be compiled by the online compiler and displayed next to the source attachment.
+While convenient, it is quite limited.
+Should a plugin make use of libraries outside of the standard, the compilation will fail.
+In such cases, the developer needs to compile the plugin themselves and upload it as a separate attachment.
+Each are given and identified by a unique ID, which is utilized for downloading.
+Unfortunately, there is no API to parse them.
+
+\subsection{GitHub}
+
+GitHub is a preferable alternative to the forums as a file host by many developers.
+For that, they mostly use the \textit{Releases} feature of the service but may store binary files along with everything else.
+In case of the latter, there exists a URL which will always point to the latest version of any file in the repository.
+A similar URL may exist pointing to a file in the \textit{Releases} section, but only for a specific release.
+Therefor, if anyone wishes to programmatically fetch a file uploaded in the latest release, the GitHub API must be utilized.
+It is then possible to iterate all the uploaded assets and read their names or URLs, among other properties.
+
+\subsection{LimeTech}
+
+LimeTech is not used by the public but rather a single developer, who also is a major contributor to both SourceMod and SourcePawn.
+The website hosts files for many popular extensions, making it worthwhile to consider when finding the way to standardize distribution.
+
+Like the forums and GitHub, it lacks a URL to download the latest publication of a project from.
+And due to a lack of an API, one must resolve to scraping.
+All the project releases hosted on the website are archives.
+They are kept on pages of their own, in a three-column table of operating systems to specific versions.
+A caveat here may be that a cell is empty, could be because a certain release for a specific system is not out yet, or is simply not supported.
+Thus a traversal of the table is required to find the next, latest one available.
+
+\subsection{Other websites}
+
+\section{Plugin Metadata Database}
