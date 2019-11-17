@@ -17,15 +17,14 @@ There are three websites where either the important ones or the majority of plug
 The official forums are the main source of advertising for developers, thus a sure way to find plugins.
 A thread dedicated to a release of one, either hosts the files as its attachments or instructs readers where to download them from.
 All addons posted on the forums must adhere to the SourceMod license, GNU General Public License, version 3.
-This license applies to derivative works as well, that is SourceMod plugins and extensions \cite{sourcemod-license}.
-This means that source must be provided along with distribution.
+This license applies to derivative works as well \cite{sourcemod-license}, which means that source must be provided along with distribution.
 
 Because of this the forums have a unique feature available to developers when posting their work.
 If a file is the source of a plugin (\textit{.sp} extension), it will automatically be compiled by the online compiler and displayed next to the source attachment.
 While convenient, it is quite limited.
 Should a plugin make use of libraries outside of the standard, the compilation will fail.
 In such cases, the developer needs to compile the plugin themselves and upload it as a separate attachment.
-Each are given and identified by a unique ID, which is utilized for downloading.
+Each are given and identified by a unique ID, which is utilized for downloading by being present in the URL.
 Unfortunately, there is no API to parse them.
 
 \subsection{GitHub}
@@ -46,9 +45,61 @@ Like the forums and GitHub, it lacks a URL to download the latest publication of
 And due to a lack of an API, one must resolve to scraping.
 All the project releases hosted on the website are archives.
 They are kept on pages of their own, in a three-column table of operating systems to specific versions.
-A caveat here may be that a cell is empty, could be because a certain release for a specific system is not out yet, or is simply not supported.
+A caveat here may be that a cell is empty, either because a certain release for a specific system is not out yet, or is simply not supported.
 Thus a traversal of the table is required to find the next, latest one available.
 
 \subsection{Other websites}
 
+Because of the heuristic nature of the solution for standardizing distribution, support for all websites is impossible.
+The top three mentioned ones are where all plugins are found, save for a few exceptions.
+And all of them require a dedicated solution in order to fetch the files.
+
+Having said that, the only information that is needed about a file is its name and download URL.
+If both are provided as a single string of data, it can be utilized to implement a generic solution agnostic of the website.
+This generic solution must not rely on any sort of API or a scraping method.
+It may only download a file from a specific URL and save it under appropriate name and directory.
+Limited of a solution as it is, it opens up possibility to support a whole range of websites.
+
+A notable example here is BitBucket, an alternative to GitHub.
+BitBucket has a \textit{Downloads} section, where each file is addressed by name.
+Because of this, it is trivial to provide download URLs for the latest version of published files that need no specific processing.
+Unlike attachments in case of the official forums, for example, which are required to be scraped.
+Likewise, any website with a similar simplistic functionality is integrable with.
+
 \section{Plugin Metadata Database}
+
+As per every package manager, there exists a corresponding repository of software packages.
+For a solution to SourceMod community's distribution problem, such a repository may not host files.
+What it can store is the data about files which constitute a package, and where they can be downloaded from.
+The crucial part is defining the format of metadata to fit plugins which are distributed across the three aforementioned websites.
+
+Anyone should be able to describe a plugin to the system, regardless whether it is self-developed or not.
+One of the most important concepts of the project is not requiring any action from other developers.
+As such, the maintainer is separated from the author.
+After describing the plugin description, the rest should be taken care of automatically.
+For instance, if the author releases a new version, it should not require any update from the side of the maintainer.
+The plugin data is parsed by the client application, which should be equipped in fetching the most recent version, adapting the method to the website it detected.
+
+To properly define a package, the following metadata must be provided, for specific reasons:
+\begin{enumerate}
+    \item \textbf{Name} -- Unique, case-insensitive name of the plugin; for identification, installation and searching.
+    \item \textbf{Author} -- Nickname of the original author, which may differ from the maintainer; for searching.
+    \item \textbf{Description} -- Short description of the idea behind the plugin; for searching.
+    \item \textbf{Category} -- Category name as it appears on the AlliedModders forums; for searching.
+    \item \textbf{Plugin ID} -- Plugin ID number as it appears AlliedModders forums' plugin's thread; for searching.
+    \item \textbf{Base URL} -- URL associated with the plugin; for installation.
+    \item \textbf{Files} -- Paths and filenames defining an plugin; for installation.
+    \item \textbf{Games} -- Multiple choice field defining which games the plugin works for, may be all; for searching.
+    \item \textbf{Dependencies} -- Names of other plugins which this plugin is dependent on; for installation.
+\end{enumerate}
+
+\subsection{Fields for searching}
+
+Optional but equally as important aspects of the database are its search capabilities.
+In order to search for a plugin the user may utilize its name, author, description, category or games it's meant for.
+
+\section{Unsupported features}
+
+TODO: explain the impossibility of the following
+
+\subsection{Installing specific version}
