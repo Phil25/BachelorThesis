@@ -66,7 +66,40 @@ Because of this, it is trivial to provide download URLs for the latest version o
 Unlike attachments in case of the official forums, for example, which are required to be scraped.
 Likewise, any website with a similar simplistic functionality is integrable with.
 
-\section{Plugin Metadata Database}
+\section{AlliedModders' Database}
+
+When a developer creates a thread on AlliedModders to promote their plugin, they are asked to fill a short form about it.
+This form contains fields such as the description, category, or applicable games.
+Upon submittal, the thread is assigned a unique ID under which the plugin's metadata is saved in the forums' database.
+They are then displayed along with the plugin ID in a header unique to threads in the \textit{Plugins} section of the forums.
+Underneath, the author attaches applicable files, or points where to download them from.
+
+For the vast majority of plugins, a thread is guaranteed to exist and the database is a promising source of metadata about plugins.
+Unfortunately, it may not be used for four main reasons:
+\begin{enumerate}
+\item
+No API to read from the database is available to third-parties.
+Developing it would require official support from the website maintainers, and although sought after, cannot be relied upon in early stages of the project.
+\item
+Post attachments are not tied to the plugin ID.
+At best they may be scraped by finding the associated thread.
+Not to mention the fact, that the file download URLs need not be present in the post at all.
+\item
+There still is the problem of a non standardized way of installing the plugins.
+By no means the author's instructions can be utilized for automating the process.
+\item
+Plugin ID may not exist for every installable addon for SourceMod.
+Though ill-advised and rare, the author is not required to make a thread should they want to publish their work on other websites only.
+Furthermore, SourceMod extensions have their own section, unrelated completely to that of plugins'.
+There, no plugin ID or database entry is present.
+And considering extensions have an analogous installation process and may be dependencies to other addons, they are worth supporting.
+In exceptionally rare situations, an extension may be simplified to become a plugin, and moved to the \textit{Plugins} section.
+No database triggers will run, and it will be left as an atypical plugin lacking its ID.
+\end{enumerate}
+
+To combat the above issues, a custom database is set up.
+
+\section{SourceMod Addon Manager Database}
 
 As per every package manager, there exists a corresponding repository of software packages.
 For a solution to SourceMod community's distribution problem, such a repository may not host files.
@@ -95,8 +128,17 @@ To properly define a package, the following metadata must be provided, for speci
 
 \subsection{Fields for searching}
 
+Akin to AlliedModders' database, (...)
 Optional but equally as important aspects of the database are its search capabilities.
-In order to search for a plugin the user may utilize its name, author, description, category or games it's meant for.
+In order to search for a plugin the user may utilize its name, author, description, category or games it is meant for.
+The name is a unique property of the plugin, issued during the installation.
+The category and game reflects the ones selectable upon submitting a plugin to the forums.
+
+\subsection{Base URL}
+
+\subsection{Files}
+
+\subsection{Dependencies}
 
 \section{Unsupported features}
 
