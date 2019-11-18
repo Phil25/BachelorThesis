@@ -71,7 +71,7 @@ Likewise, any website with a similar simplistic functionality is integrable with
 When a developer creates a thread on AlliedModders to promote their plugin, they are asked to fill a short form about it.
 This form contains fields such as the description, category, or applicable games.
 Upon submittal, the thread is assigned a unique ID under which the plugin's metadata is saved in the forums' database.
-They are then displayed along with the plugin ID in a header unique to threads in the \textit{Plugins} section of the forums.
+They are then displayed along with this plugin ID in a header unique to threads in the \textit{Plugins} section of the forums.
 Underneath, the author attaches applicable files, or points where to download them from.
 
 For the vast majority of plugins, a thread is guaranteed to exist and the database is a promising source of metadata about plugins.
@@ -79,21 +79,21 @@ Unfortunately, it may not be used for four main reasons:
 \begin{enumerate}
 \item
 No API to read from the database is available to third-parties.
-Developing it would require official support from the website maintainers, and although sought after, cannot be relied upon in early stages of the project.
+Developing it would require support from the website maintainers, and although sought after, cannot be relied upon in early stages of the project.
 \item
 Post attachments are not tied to the plugin ID.
-At best they may be scraped by finding the associated thread.
+At best, they may be scraped after finding the associated thread.
 Not to mention the fact, that the file download URLs need not be present in the post at all.
 \item
 There still is the problem of a non standardized way of installing the plugins.
-By no means the author's instructions can be utilized for automating the process.
+By no means can the author's instructions be utilized for automating the process.
 \item
 Plugin ID may not exist for every installable addon for SourceMod.
 Though ill-advised and rare, the author is not required to make a thread should they want to publish their work on other websites only.
 Furthermore, SourceMod extensions have their own section, unrelated completely to that of plugins'.
 There, no plugin ID or database entry is present.
 And considering extensions have an analogous installation process and may be dependencies to other addons, they are worth supporting.
-In exceptionally rare situations, an extension may be simplified to become a plugin, and moved to the \textit{Plugins} section.
+Lastly, in exceptionally rare situations, an extension may be simplified to become a plugin, and moved to the \textit{Plugins} section.
 No database triggers will run, and it will be left as an atypical plugin lacking its ID.
 \end{enumerate}
 
@@ -109,36 +109,98 @@ The crucial part is defining the format of metadata to fit plugins which are dis
 Anyone should be able to describe a plugin to the system, regardless whether it is self-developed or not.
 One of the most important concepts of the project is not requiring any action from other developers.
 As such, the maintainer is separated from the author.
-After describing the plugin description, the rest should be taken care of automatically.
+After providing the plugin specification, the rest should be taken care of automatically.
 For instance, if the author releases a new version, it should not require any update from the side of the maintainer.
-The plugin data is parsed by the client application, which should be equipped in fetching the most recent version, adapting the method to the website it detected.
+The plugin data is parsed by the client application, which should be able to fetch the most recent version, adapting the method to the website it detected.
 
 To properly define a package, the following metadata must be provided, for specific reasons:
 \begin{enumerate}
     \item \textbf{Name} -- Unique, case-insensitive name of the plugin; for identification, installation and searching.
-    \item \textbf{Author} -- Nickname of the original author, which may differ from the maintainer; for searching.
+    \item \textbf{Author} -- Name the original author goes by, which may differ from the maintainer; for searching.
     \item \textbf{Description} -- Short description of the idea behind the plugin; for searching.
     \item \textbf{Category} -- Category name as it appears on the AlliedModders forums; for searching.
-    \item \textbf{Plugin ID} -- Plugin ID number as it appears AlliedModders forums' plugin's thread; for searching.
+    \item \textbf{Plugin ID} -- Plugin ID number as it appears AlliedModders forums' plugin's thread; for possible future integration.
     \item \textbf{Base URL} -- URL associated with the plugin; for installation.
     \item \textbf{Files} -- Paths and filenames defining an plugin; for installation.
     \item \textbf{Games} -- Multiple choice field defining which games the plugin works for, may be all; for searching.
-    \item \textbf{Dependencies} -- Names of other plugins which this plugin is dependent on; for installation.
+    \item \textbf{Dependencies} -- Names of other plugins which this plugin is dependent upon; for installation.
 \end{enumerate}
 
-\subsection{Fields for searching}
+\subsection{Fields utilized in searching}
 
-Akin to AlliedModders' database, (...)
 Optional but equally as important aspects of the database are its search capabilities.
-In order to search for a plugin the user may utilize its name, author, description, category or games it is meant for.
-The name is a unique property of the plugin, issued during the installation.
-The category and game reflects the ones selectable upon submitting a plugin to the forums.
+Akin to AlliedModders' database, there exist fields like description, category or games.
+The category is a single choice list: \textit{Admin Commands}, \textit{Fun Stuff}, \textit{Gameplay}, \textit{General Purpose}, \textit{Server Management}, \textit{Statistical}, \textit{Technical/Development}.
+Similarly to author, description, or games, it is used purely for searching purposes.
+The applicable games could be enforced during the installation, but often so it happens that plugin works for more games than specified by the author.
+
+\subsection{Plugin ID}
+
+Plugin ID is as it appears on the forums.
+It serves no purpose in the early stages of the project, but might be useful should the official integration come in.
+Should it, there will be no need to store the author, description or category, as all three could be fetched from the forums' database.
+This way, data would not be needlessly duplicated and be required to be entered twice by the person submitting.
+This feature can only be supplied for plugins, as extensions or rare cases of plugins have no ID.
 
 \subsection{Base URL}
 
+Base URL is the first of the two most important fields of the project.
+It is by this field the website will be detected by the client-side application, after which the appropriate method of parsing will be used.
+Each plugin entry must have this field carefully selected based on the website by the submitter.
+
+\subsubsection{AlliedModders}
+
+In case of AlliedModders, this will be the URL to the post containing the files.
+From there, the client is able to scrape the attachments.
+It is also possible to provide a link to the entire thread, instead of only the original post, or any webpage from which post attachments can be accessed.
+
+\subsubsection{GitHub}
+
+As mentioned, in GitHub it is possible to provide a URL to the latest version of the file in a repository.
+This is what is used in the generic solution used for unknown websites.
+However, GitHub API usage is required to parse a specific file from the latest release.
+Should this functionality be needed, a URL to the repository may be entered.
+After that, it is trivial for the client to find the \textit{Releases} API page and fetch the files published there.
+
+\subsubsection{LimeTech}
+
+LimeTech in this sense is very simple.
+Every project submitted there follows a standard of being an archive in a cell of a table.
+All that is needed is scraping that table to find the latest version.
+The project-specific page's URL is all the information the client needs to find the files.
+
+\subsubsection{Other websites}
+
+Base URL field for websites besides the main three is redundant.
+This is because the field is used only to detect the parsing method, but none may be supported when the URL is unknown.
+In such cases, the only thing left to fill is the \textit{Files} field appropriately.
+
 \subsection{Files}
 
+Files is the second of the two most important fields of the project.
+This is the field the client uses to link attachments parsed from the \textit{Base URL} to the actual placement and names of the them on the disk.
+Every file here is defined manually by the addon's maintainer in the following format: \verb|<path to file>;<file identifier>|.
+The two fields must be separated by a semicolon.
+
+\subsubsection{Path to file}
+
+This is the property that relates directly to where the file belongs on the disk.
+The path must be unique to server installation.
+For convenience purposes, it is defined to be relative to SourceMod installation root.
+From here there are the shortest paths to commonly used directories, for instance, \textbf{mod/addons/sourcemod/plugins}.
+
+Relative paths are supported, such as "\verb|..|" to go up a directory.
+This is required because, as mentioned previously, addon files are not limited to the SourceMod directories.
+A possible security flaw appears here, as the maintainer can exploit this freedom to move up as many directories as they please.
+This must be accounted for and limited to the server installation, such as \textbf{mod/}.
+An enforcement is present on the client side, making it impossible to go up more than two directories.
+Furthermore, it is illegal to enter any non-directory locations, such as symlinks or mounted drives.
+
+\subsubsection{File identifier}
+
 \subsection{Dependencies}
+
+Dependencies on the forums are for the end user to note the prerequisites, they are listed as plugin IDs linking to appropriate threads.
 
 \section{Unsupported features}
 
