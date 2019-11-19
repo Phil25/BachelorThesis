@@ -184,23 +184,46 @@ The two fields must be separated by a semicolon.
 
 \subsubsection{Path to file}
 
-This is the property that relates directly to where the file belongs on the disk.
-The path must be unique to server installation.
+This is the property that relates directly to where the file belongs on the disk, it must be unique to server installation.
 For convenience purposes, it is defined to be relative to SourceMod installation root.
-From here there are the shortest paths to commonly used directories, for instance, \textbf{mod/addons/sourcemod/plugins}.
+From here there are the shortest paths to commonly used directories, for instance, \path{mod/addons/sourcemod/plugins}.
 
 Relative paths are supported, such as "\verb|..|" to go up a directory.
-This is required because, as mentioned previously, addon files are not limited to the SourceMod directories.
+This is required because, as previously mentioned, addon files may not be limited to the SourceMod directories.
 A possible security flaw appears here, as the maintainer can exploit this freedom to move up as many directories as they please.
-This must be accounted for and limited to the server installation, such as \textbf{mod/}.
+This must be accounted for and limited to the server installation, such as \path{mod/}.
 An enforcement is present on the client side, making it impossible to go up more than two directories.
 Furthermore, it is illegal to enter any non-directory locations, such as symlinks or mounted drives.
 
 \subsubsection{File identifier}
 
+This property relates to the attachment names retrieved from the \textit{Base URL}.
+If this identifier is just a name of the file, it is cross-referenced with the attachments found.
+Should it match one, the URL the attachment points to will be used to download and save the file under \path{{path/to/file}/{identifier}}.
+
+The file identifier can also be a URL.
+In this case the retrieved attachments are not used, since the URL is already known.
+It is downloaded and saved in a similar manner, whatever legal location \textit{path to file} points to.
+This is the reason the explicit semicolon separation is needed, to clearly distinguish what could be either a URL or a simple file name.
+
+There is a third possibility, in case the name of the file is not static.
+The actual name itself is not prone to change, however, the may be situations when a developer includes a version number.
+This happens most often when a whole project is archived but may also come up when the plugin is a single binary file.
+For this purpose, the support for regex-defined file identifiers is needed.
+This will ensure the version number could be dynamic.
+In such case, it is possible to match against multiple attachments.
+Only one may be valid, however assuming their only difference is the version number, it is trivial to compare them to retrieve the latest one.
+
 \subsection{Dependencies}
 
 Dependencies on the forums are for the end user to note the prerequisites, they are listed as plugin IDs linking to appropriate threads.
+The dependencies field in this project are not specifically for viewing, but are rather used in the installation.
+In practise, it is quite rare for a plugin to have dependency on another.
+But the less often it happens, the more surprising it may be when a plugin refuses to load.
+
+This field is simply a string of addon names separated by comma.
+Just as the names themselves, the dependencies are agnostic of whether they refer to a plugin or an extension.
+For implementation-specific reasons, dependency addons must be installed prior.
 
 \section{Unsupported features}
 
