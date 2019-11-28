@@ -225,6 +225,42 @@ This field is simply a string of addon names separated by comma.
 Just as the names themselves, the dependencies are agnostic of whether they refer to a plugin or an extension.
 For implementation-specific reasons, dependency addons must be installed prior.
 
+\subsection{Deployment}
+
+The database is set up on a virtual private server provided by \textit{Digital Ocean}.
+Interaction is achieved through an web server bound to a custom domain name -- \path{smamdb.net}.
+Communication with that server is end-to-end encrypted with TLS using a certificate issued by \textit{Let's Encrypt}.
+This warrants three important aspects of fetching packages:
+\begin{enumerate}
+\item \textbf{Authenticity} ensures that the web server the client interacts with is indeed owned by a trusted party.
+\item \textbf{Integrity} takes care of fetching the data fully and correctly, without falling victim to potential tampering during transfer.
+\item Despite being less important in this situation, \textbf{confidentiality} keeps the connection between the client and the web server private.
+\end{enumerate}
+
+\subsubsection{Interaction API}
+
+To interact with the database the client sends GET requests to \url{https://smamdb.net/}.
+For installation purposes, only the \verb|ids| parameter must be supplied, which is a single name or multiple names of addons separated by a comma.
+As a response, the server provides a list of JSON objects representing data about each addon requested, with the following fields:
+\begin{itemize}
+    \item \textbf{id} -- name of the addon,
+    \item \textbf{author} -- to be saved locally for displaying,
+    \item \textbf{description} -- to be saved locally for displaying,
+    \item \textbf{url} -- \textit{Base URL} which to parse,
+    \item \textbf{files} -- definition of files to be searched on said URL,
+    \item \textbf{deps} -- list of dependencies, skipped if there are none.
+\end{itemize}
+
+If there is more than one dependency, the server is forced to recursively retrieve all of them.
+This makes it possible to return a longer list of addon objects than requested.
+Furthermore, an action is taken to ensure each addon is provided only once in the list, and not processed for dependencies again.
+
+\subsubsection{Management Interface}
+
+\url{https://smamdb.net/interface/}
+
+\section{SourceMod Addon Manager}
+
 \section{Unsupported features}
 
 TODO: explain the impossibility of the following
