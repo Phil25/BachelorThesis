@@ -1,6 +1,6 @@
 \chapter{Solution}
 
-\section{Current Publishing Conventions}
+\section{Current publishing conventions}
 
 Although there is no set standard on how to publish plugins, conventions have emerged over time.
 Taking advantage of them is the first step towards standardizing distribution.
@@ -66,7 +66,7 @@ Because of this, it is trivial to provide download URLs for the latest version o
 Unlike attachments in case of the official forums, for example, which are required to be scraped.
 Likewise, any website with a similar simplistic functionality is integrable with.
 
-\section{AlliedModders' Database}
+\section{AlliedModders' database}
 
 When a developer creates a thread on AlliedModders to promote their plugin, they are asked to fill a short form about it.
 This form contains fields such as the description, category, or applicable games.
@@ -99,7 +99,7 @@ No database triggers will run, and it will be left as an atypical plugin lacking
 
 To combat the above issues, a custom database is set up.
 
-\section{SourceMod Addon Manager Database}
+\section{SourceMod Addon Manager database}
 
 As per every package manager, there exists a corresponding repository of software packages.
 For a solution to SourceMod community's distribution problem, such a repository may not host files.
@@ -126,7 +126,7 @@ To properly define a package, the following metadata must be provided, for speci
     \item \textbf{Dependencies} -- Names of other plugins which this plugin is dependent upon; for installation.
 \end{enumerate}
 
-\subsection{Fields utilized in searching}
+\subsection{Fields utilized for searching}
 
 Optional but equally as important aspects of the database are its search capabilities.
 Akin to AlliedModders' database, there exist fields like description, category or games.
@@ -227,6 +227,8 @@ For implementation-specific reasons, dependency addons must be installed prior.
 
 \subsection{Deployment}
 
+\subsubsection{Security}
+
 The database is set up on a virtual private server provided by \textit{Digital Ocean}.
 Interaction is achieved through an web server bound to a custom domain name -- \path{smamdb.net}.
 Communication with that server is end-to-end encrypted with TLS using a certificate issued by \textit{Let's Encrypt}.
@@ -236,6 +238,20 @@ This warrants three important aspects of fetching packages:
 \item \textbf{Integrity} takes care of fetching the data fully and correctly, without falling victim to potential tampering during transfer.
 \item Despite being less important in this situation, \textbf{confidentiality} keeps the connection between the client and the web server private.
 \end{enumerate}
+
+Plugins have access to many sensitive parts of the server including database connections or the file system.
+Because of this, it is important to ensure authenticity of the metadata retrieved.
+This, of course, does not warrant full safety as the metadata itself could lead to vulnerable endpoints.
+One reason could be that the developer who is publishing their work fancies distributing it on their own website, which happens to be unsecure.
+Another reason could be that the attacker had gained access to publishing or editing plugins, rendering them compromised.
+
+By using the OAuth2 protocol, Valve provides third-party authentication mechanism against their Steam services.
+It is by these mechanisms that publishers are recognised and validated, as each of them is expected to have a Steam account.
+Not everyone is allowed to publish their work on the website by default.
+The user must be trusted in order to have access, and that trust is granted by a moderator.
+Moderators, in turn, are created by the owner.
+Furthermore, each submission is tied to the submitter, they may edit or delete their submissions but not others'.
+Once again, somebody may publish the plugin for the developer instead, so they are not required to have access to make use of the service.
 
 \subsubsection{Interaction API}
 
@@ -256,6 +272,8 @@ This makes it possible to return a longer list of addon objects than requested.
 Furthermore, an action is taken to ensure each addon is provided only once in the list, and not processed for dependencies again.
 
 \subsubsection{Management Interface}
+
+\subsubsection{Self distribution}
 
 \url{https://smamdb.net/interface/}
 
