@@ -100,6 +100,7 @@ No database triggers will run, and it will be left as an atypical plugin lacking
 To combat the above issues, a custom database is set up.
 
 \section{SourceMod Addon Manager database}
+\label{smamdb-main}
 
 As per every package manager, there exists a corresponding repository of software packages.
 For a solution to SourceMod community's distribution problem, such a repository may not host files.
@@ -248,10 +249,13 @@ Another reason could be that the attacker had gained access to publishing or edi
 By using the OAuth2 protocol, Valve provides third-party authentication mechanism against their Steam services.
 It is by these mechanisms that publishers are recognised and validated, as each of them is expected to have a Steam account.
 Not everyone is allowed to publish their work on the website by default.
-The user must be trusted in order to have access, and that trust is granted by a moderator.
-Moderators, in turn, are created by the owner.
+The user must be trusted in order to have access, and that trust is granted by the owner.
 Furthermore, each submission is tied to the submitter, they may edit or delete their submissions but not others'.
-Once again, somebody may publish the plugin for the developer instead, so they are not required to have access to make use of the service.
+To reiterate, somebody may publish the plugin for the developer instead, so they are not required to have access to make use of the service.
+
+By the end of the day, addons and the game server itself are meant to be public entities, visible and open source.
+This is why confidentiality in this case is fully optional, as SourceMod officially provides means for anyone to view the running plugins.
+However, a few people might find it useful should they decide to host their own database of plugins on their own machine, as explained in later sections.
 
 \subsubsection{Interaction API}
 
@@ -264,7 +268,7 @@ As a response, the server provides a list of JSON objects representing data abou
     \item \textbf{description} -- to be saved locally for displaying,
     \item \textbf{url} -- \textit{Base URL} which to parse,
     \item \textbf{files} -- definition of files to be searched on said URL,
-    \item \textbf{deps} -- list of dependencies, skipped if there are none.
+    \item \textbf{deps} -- list of dependencies, omitted if there are none.
 \end{itemize}
 
 If there is more than one dependency, the server is forced to recursively retrieve all of them.
@@ -273,14 +277,44 @@ Furthermore, an action is taken to ensure each addon is provided only once in th
 
 \subsubsection{Management Interface}
 
-\subsubsection{Self distribution}
+SourceMod Addon Manager Database is a project consisting of more than just a database and the API to call it.
+This entire endeavour is largely dependent on user support and their accessibility towards it.
+Under \url{https://smamdb.net/interface/} a button can be found which directs users to a Steam website in order to validate their authenticity.
+After logging in through Steam, they will be forwarded to a panel showing their submitted addons, both accepted and pending, shown in Figure \ref{fig:smamdb-panel}.
 
-\url{https://smamdb.net/interface/}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{smamdb-panel.png}
+  \caption{SourceMod Addon Manager Database user interface panel}
+  \label{fig:smamdb-panel}
+\end{figure}
+
+Pending appeals are ones awaiting a trusted user to confirm their validity.
+They must be checked for correctness of the properties given but also for the trustworthiness of the submitter.
+Steam API is a great help for the latter.
+It can retrieve whether the user's profile is private, how long the account has existed for, or whether it had any incidents in the past, cheating or otherwise.
+After this step the appeal is moved to the submission section and is available to be retrieved using the Database API.
+At any moment the submitter is able to edit the metadata of their submissions for correction or potential upkeep requirements.
+
+The \textit{Filter...} field is used to dynamically filter self submitted addons in either section by entering parts of their name.
+Any of the shown ones may be clicked to open up an editing form, shown in Figure \ref{fig:smamdb-editing}.
+The plus button next to it brings up a menu to add a new submission, for untrusted users, this button is available only for the appeals section.
+Submitting an addon is simply filling a form containing all the fields explained in Section \ref{smamdb-main}.
+This form looks exactly the same as the editing form, save for \textit{submit} button at the bottom, instead of \textit{delete} and \textit{update}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{smamdb-editing.png}
+  \caption{SourceMod Addon Manager Database submission editing interface}
+  \label{fig:smamdb-editing}
+\end{figure}
+
+\subsubsection{Self deployment}
 
 \section{SourceMod Addon Manager}
 
 \section{Unsupported features}
 
-TODO: explain the impossibility of the following
-
 \subsection{Installing specific version}
+
+\subsection{Automatic updates}
