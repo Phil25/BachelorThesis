@@ -311,6 +311,23 @@ This form looks exactly the same as the editing form, save for \textit{submit} b
 
 \subsubsection{Self deployment}
 
+The database website and the client application are designed to be disjoint entities.
+The former exposes an API which returns data in JSON, which then can be parsed by a multitude of things, due to the popularity of the format.
+Likewise, calls are simple GET requests, making them trivial to be performed from many bare-bones solutions, like the \verb|curl| program.
+The burden of implementation lays on the client application, it is where the complexity of the system is located.
+
+The website is a completely different matter.
+After all, the custom interface exists for human interaction and is not needed by the client.
+For this reason, its only required function is the ability to parse a GET parameter and return the requested plugin metadata in a valid format.
+This makes it possible to write a simple solution for a self host a web server.
+As long as it is bound to a hostname, for example \verb|localhost|, the client application can interact with it just like it does with \url{https://smamdb.net/}.
+
+A self hosted solution may be preferred by communities having their own repository of plugins and wish not to publicize them.
+Another reason might be a plugin developer using it to quickly deploy their work on a testing server located on a different machine.
+To achieve this, one may host the web server on their work computer and use SourceMod Addon Manager to retrieve and install the plugin remotely.
+All that is needed is to point to client application to the right URL.
+Many things are possible by having this flexibility.
+
 \section{SourceMod Addon Manager}
 
 \section{Unsupported features}
