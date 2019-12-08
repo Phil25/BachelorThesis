@@ -275,7 +275,7 @@ If there is more than one dependency, the server is forced to recursively retrie
 This makes it possible to return a longer list of addon objects than requested.
 Furthermore, an action is taken to ensure each addon is provided only once in the list, and not processed for dependencies again.
 
-\subsubsection{Management Interface}
+\subsubsection{Management interface}
 
 SourceMod Addon Manager Database is a project consisting of more than just a database and the API to call it.
 This entire endeavour is largely dependent on user support and their accessibility towards it.
@@ -312,7 +312,7 @@ This form looks exactly the same as the editing form, save for \textit{submit} b
 \subsubsection{Self deployment}
 
 The database website and the client application are designed to be disjoint entities.
-The former exposes an API which returns data in JSON, which then can be parsed by a multitude of things, due to the popularity of the format.
+The former exposes an API which returns data in JSON, which can be parsed by a multitude of things, due to the popularity of the format.
 Likewise, calls are simple GET requests, making them trivial to be performed from many bare-bones solutions, like the \verb|curl| program.
 The burden of implementation lays on the client application, it is where the complexity of the system is located.
 
@@ -329,6 +329,80 @@ All that is needed is to point to client application to the right URL.
 Many things are possible by having this flexibility.
 
 \section{SourceMod Addon Manager}
+
+The bulk of the complexity is contained within the client-side part of the project -- SourceMod Addon Manager (\textit{SMAM}).
+It is a command line tool used to fetch and parse data from database websites, download addon files and keep track of them.
+SMAM is distributed as a standalone binary natively compiled from modern, idiomatic C++ code, adhering to the latest standard, being C++17 at time of writing.
+When the time comes, making use of many of the C++20 features is planned.
+
+The target platforms are Linux, Windows and MacOS, considering SourceMod itself is available on each.
+To support this, the application is built with the help of a powerful, cross-platform build system utilizing CMake and Conan tooling.
+CMake is a build system generator which creates and configures files for selected the build utility, such as UNIX Makefiles or Visual Studio.
+Conan, being a praiseworthy supplement for CMake, additionally wraps the whole process in a cross-platform dependency management solution.
+
+\subsection{Building}
+
+The building operations are entirely abstracted by Conan and are split into a two step process:
+\begin{enumerate}
+\item
+Firstly, \verb|conan install| command is run, specifying the root directory of the source code.
+From this directory a file named \verb|conanfile.py| is parsed.
+In it, the crucial parts of the build are defined, such as its type, the generator, or most notably, the project's dependencies.
+Conan will ensure that they are available for the same target platform and architecture, as well as compiler and its version, as configured for the project.
+The dependencies are downloaded to a remote location and built if the specific pre-compiled binaries are not found, should they even need be compiled.
+The appropriate paths are then provided to the selected generator, such as CMake, to aid the compilation process in finding and linking the libraries.
+
+\item
+The execution of \verb|conan build| creates the generator configuration files in the current working directory.
+When everything is in place, compilation of the project will be triggered, producing the binary in the designated location.
+It is also possible to pass the \verb|-c| (configure) flag, to create CMake files only and not trigger the build afterwards.
+\end{enumerate}
+
+Additionally, Conan provides cross-building support, i.e. building for a different platform than the one the process happens on.
+It does that through the help of profiles.
+A profile is a file containing a pre-configured set of options defining the target and host platforms, or compiler and version, among many others.
+One's name can be provided during the setup stage and the rest is taken care of by Conan.
+
+\subsection{Usage}
+
+There are four modes of operations (commands) available:
+\begin{enumerate}
+    \item \verb|install| -- install specified addons, i.e. fetch their metadata and download files into appropriate directories, as well as dependencies,
+    \item \verb|remove| -- remove downloaded files and clean up implicit dependencies,
+    \item \verb|info| -- show information about currently installed addons,
+    \item \verb|search| -- query the database for specified addons.
+\end{enumerate}
+
+Selecting a mode is simply typing its name after the command, followed by a potential list of addons passed as space-separated arguments: \verb|smam install rtd|.
+Only one mode may be selected at a time.
+
+\subsection{Install command}
+
+Typing \verb|smam install| will trigger the functionality responsible for collecting addon metadata and downloading files.
+After the \verb|install| keyword addons IDs should be provided as space-separated arguments.
+This is understandably the most complex of all the commands as it is the crux functionality of the project.
+
+\subsection{Remove command}
+
+\subsection{Info command}
+
+\subsection{Search command}
+
+\subsection{Options}
+
+Among commands the user may pass options:
+\begin{itemize}
+    \item \verb|-h [--help]| -- prints help outlying all the commands and options;
+    \item \verb|-v [--version]| -- prints version;
+    \item \verb|-q [--quiet]| -- suppresses output;
+    \item \verb|-f [--force]| -- forces command execution, different behaviour dependent on the command;
+    \item \verb|--no-deps| -- disables automatic dependency installation/removal;
+    \item \verb|--no-prefix| -- disables output prefixes indicating severity, such as information, warning or error;
+    \item \verb|--no-color| -- disables coloring in output;
+    \item \verb|--allow-running-as-root| -- enables running the command with root privileges;
+    \item \verb|-d [--destination]| -- specify where to look for the server directory;
+    \item \verb|-db-url| -- URL of the database to fetch metadata from, defaults to \url{https://smamdb.net/}.
+\end{itemize}
 
 \section{Unsupported features}
 
