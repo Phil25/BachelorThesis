@@ -361,7 +361,39 @@ It is also possible to pass the \verb|-c| (configure) flag, to create CMake file
 Additionally, Conan provides cross-building support, i.e. building for a different platform than the one the process happens on.
 It does that through the help of profiles.
 A profile is a file containing a pre-configured set of options defining the target and host platforms, or compiler and version, among many others.
-One's name can be provided during the setup stage and the rest is taken care of by Conan.
+The name of one can be provided during the setup stage and the rest will be taken care of by Conan.
+
+\subsection{Tracking installed addons}
+
+There can be many game servers set up on a single machine, each having their own SourceMod directory, which in turn have their own set of installed addons.
+Files of such addons can be split up across different directories over the server repository, which makes them non-trivial to be detected.
+Because of this, SMAM keeps track of addons it has installed itself, as only then it may know all the relevant files.
+It does that by storing their metadata in a local file named \verb|.smamdata.json|, in the aforementioned SourceMod's root directory.
+Locally stored data is not a perfect one-to-one representation of the one stored remotely in the public database (as described in Section \ref{smamdb-main}).
+It is, however, very similar.
+This allows the local and remote storage to be parsed using the same mechanism with minor adjustments, saving a lot of logic complexity.
+Namely, the shared fields are \textit{id}, \textit{author}, \textit{description}, \textit{files} and \textit{deps}.
+
+However, one more field is present only locally -- \textit{explicit}.
+It is a boolean property which specifies whether the user requested that addon themselves or it was installed as a dependency outside user's instructions.
+This ensures that during the removal process, all implicitly installed addons which are no longer dependent on are cleaned accordingly.
+
+Storing a file on the disk comes with a few caveats.
+It must be read and updated every time an operation is executed, which makes it vulnerable to random IO errors.
+It may also fall victim to user tampering, which could easily invalidate the format.
+These issues are addressed in the following ways:
+\begin{enumerate}
+\item
+Placing a period at the beginning of the file in UNIX-based filesystems effectively hides it.
+Making \verb|.smamdata.json| visible only during explicit searches.
+\item
+The storage file is saved in conjunction with \verb|.smamdata.json.bak|, which is its twin copy.
+\item
+In the root of \verb|.smamdata.json| two fields are present -- \textit{data} and \textit{hash}.
+While \textit{data} is the main field from which metadata for installed addons is retrieved, the latter is its hash value.
+After every saving and loading operation this value is verified.
+In case a mismatch is found, a recovery using \verb|.smamdata.json.bak| is attempted.
+\end{enumerate}
 
 \subsection{Usage}
 
@@ -381,6 +413,12 @@ Only one mode may be selected at a time.
 Typing \verb|smam install| will trigger the functionality responsible for collecting addon metadata and downloading files.
 After the \verb|install| keyword addons IDs should be provided as space-separated arguments.
 This is understandably the most complex of all the commands as it is the crux functionality of the project.
+
+Given that administrators are free to set up as many game servers on a machine as they please, SMAM must know the location of targeted one's SourceMod directory.
+Luckily, the game server has a specified structure which can easily be detected, which allows for simple but efficient heuristics to be implemented.
+SourceMod will be found provided the application is executed anywhere within the \textit{mod} directory, the root of server files.
+Users are also able to specify the path themselves using the \verb|-d [--destination]| flag, using which same method will be applied to find the correct folder.
+All the operations henceforth will be performed in relation to SourceMod's root directory.
 
 \subsection{Remove command}
 
