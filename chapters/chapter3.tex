@@ -364,6 +364,7 @@ A profile is a file containing a pre-configured set of options defining the targ
 The name of one can be provided during the setup stage and the rest will be taken care of by Conan.
 
 \subsection{Tracking installed addons}
+\label{tracking-addons}
 
 There can be many game servers set up on a single machine, each having their own SourceMod directory, which in turn have their own set of installed addons.
 Files of such addons can be split up across different directories over the server repository, which makes them non-trivial to be detected.
@@ -395,6 +396,23 @@ After every saving and loading operation this value is verified.
 In case a mismatch is found, a recovery using \verb|.smamdata.json.bak| is attempted.
 \end{enumerate}
 
+\subsection{Networking implementation}
+
+Any network interaction is achieved with the help of cURL, a versatile, cross-platform C library supporting a wide range of protocols.
+Each network request is accompanied by a specific user agent, generated each build using the following formula:
+
+\begin{figure}[htp]
+\centering
+\verb|SourceMod Addon Manager/{major}.{minor}.{patch}-{revision}|
+\end{figure}
+Where \verb|{major}|, \verb|{minor}| and \verb|{patch}| are consecutive fields adhering to the semantic versioning formatting standard.
+Additionally, \verb|{revision}| is provided to indicate the commit number.
+For convenience purposes, this further aids the receiver in being able to pin point down the exact calling code.
+
+Currently, the only networking functionality is downloading JSON data from a database, HTML code from websites needing scraping and files from various sources.
+For these purposes, the only protocols used are HTTP or HTTPS, as only interaction from publicly available sources is needed.
+The cURL library opens up possibilities for future implementations of interacting with more private sources, over protocols such as FTP or SSH.
+
 \subsection{Usage}
 
 There are four modes of operations (commands) available:
@@ -411,14 +429,23 @@ Only one mode may be selected at a time.
 \subsection{Install command}
 
 Typing \verb|smam install| will trigger the functionality responsible for collecting addon metadata and downloading files.
-After the \verb|install| keyword addons IDs should be provided as space-separated arguments.
+After the \verb|install| keyword addon IDs should be provided as space-separated arguments.
 This is understandably the most complex of all the commands as it is the crux functionality of the project.
 
 Given that administrators are free to set up as many game servers on a machine as they please, SMAM must know the location of targeted one's SourceMod directory.
-Luckily, the game server has a specified structure which can easily be detected, which allows for simple but efficient heuristics to be implemented.
+Luckily, the game server has a specified, easily detectable structure, which allows for simple but efficient heuristics to be implemented.
 SourceMod will be found provided the application is executed anywhere within the \textit{mod} directory, the root of server files.
-Users are also able to specify the path themselves using the \verb|-d [--destination]| flag, using which same method will be applied to find the correct folder.
-All the operations henceforth will be performed in relation to SourceMod's root directory.
+Users are also able to specify the path themselves using the \verb|-d [--destination]| flag, with which the same method will be used to find the correct folder.
+All the operations henceforth will be performed relative to SourceMod's root directory.
+
+For the initial set up, a GET request is performed to the website pointed to by the \verb|--db-url| flag, defaulting to \url{https://smamdb.net/} if unspecified.
+In this request, a variable named \verb|ids| is present, consisting of comma separated list of addon IDs which were provided by the user.
+In accordance with Section \ref{smamdb-main}, requested addon metadata is returned in the JSON format.
+The data is stored by the application to be used later during the installation process.
+
+Before it may begin, however, the \verb|.smamdata.json| file is parsed, providing information on currently installed addons.
+With it, SMAM is able to recognize whether a requested addon or addons need to undergo the installation process.
+If they are found already installed, each is marked as \textit{explicit} (explained in Section \ref{tracking-addons}) and are no longer acted upon.
 
 \subsection{Remove command}
 
