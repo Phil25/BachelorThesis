@@ -413,6 +413,9 @@ Currently, the only networking functionality is downloading JSON data from a dat
 For these purposes, the only protocols used are HTTP or HTTPS, as only interaction from publicly available sources is needed.
 The cURL library opens up possibilities for future implementations of interacting with more private sources, over protocols such as FTP or SSH.
 
+\subsection{Fetching addon files}
+\label{fetching-files}
+
 \subsection{Usage}
 
 There are four modes of operations (commands) available:
@@ -423,8 +426,8 @@ There are four modes of operations (commands) available:
     \item \verb|search| -- query the database for specified addons.
 \end{enumerate}
 
-Selecting a mode is simply typing its name after the command, followed by a potential list of addons passed as space-separated arguments: \verb|smam install rtd|.
-Only one mode may be selected at a time.
+Choosing a mode is simply typing its name after the command, followed by a potential list of addons passed as space-separated arguments: \verb|smam install rtd|.
+Only one mode is performed at a time.
 
 \subsection{Install command}
 
@@ -438,14 +441,34 @@ SourceMod will be found provided the application is executed anywhere within the
 Users are also able to specify the path themselves using the \verb|-d [--destination]| flag, with which the same method will be used to find the correct folder.
 All the operations henceforth will be performed relative to SourceMod's root directory.
 
-For the initial set up, a GET request is performed to the website pointed to by the \verb|--db-url| flag, defaulting to \url{https://smamdb.net/} if unspecified.
-In this request, a variable named \verb|ids| is present, consisting of comma separated list of addon IDs which were provided by the user.
+The installation process consists of five steps:
+\begin{enumerate}
+\item
+A GET request is performed to the website pointed to by the \verb|--db-url| flag, defaulting to \url{https://smamdb.net/} if left unspecified.
+This request is supplied with a variable named \verb|ids|, consisting of comma separated list of addon IDs provided by the user.
 In accordance with Section \ref{smamdb-main}, requested addon metadata is returned in the JSON format.
 The data is stored by the application to be used later during the installation process.
 
-Before it may begin, however, the \verb|.smamdata.json| file is parsed, providing information on currently installed addons.
+\item
+The \verb|.smamdata.json| file is read, providing information on currently installed addons.
 With it, SMAM is able to recognize whether a requested addon or addons need to undergo the installation process.
 If they are found already installed, each is marked as \textit{explicit} (explained in Section \ref{tracking-addons}) and are no longer acted upon.
+
+\item
+If an addon can be installed, a directory is created in the temporary location defined by the operating system.
+This step acts as initialization of a transaction, as the process is quite error-prone and meant to be easily revertible should anything go wrong.
+
+\item
+Using the parsed addon's metadata, dependencies are iterated through, downloaded and installed; then the requested addon follows suit.
+Files are fetched with the method explained in Section \ref{fetching-files}, then placed in the temporary location.
+An appropriate directory structure is created along with each file, constructing a replica of the actual server structure.
+Should installation of any dependency or the addon itself encounter an error, the process ends.
+
+\item
+Transaction is committed by overlaying the temporary folder with the actual one, overwriting any files.
+This step's logic is largely provided by the operating system, through the standard library.
+The installation process moves on to the next addon ID specified by the user, ends if there is none.
+\end{enumerate}
 
 \subsection{Remove command}
 
