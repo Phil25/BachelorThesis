@@ -1,6 +1,7 @@
 \chapter{Solution}
 
 \section{Current publishing conventions}
+\label{publishing-conventions}
 
 Although there is no set standard on how to publish plugins, conventions have emerged over time.
 Taking advantage of them is the first step towards standardizing distribution.
@@ -13,6 +14,7 @@ There are three websites where either the important ones or the majority of plug
 \end{itemize}
 
 \subsection{AlliedModders forums}
+\label{alliedmodders-formus}
 
 The official forums are the main source of advertising for developers, thus a sure way to find plugins.
 A thread dedicated to a release of one, either hosts the files as its attachments or instructs readers where to download them from.
@@ -179,7 +181,7 @@ In such cases, the only thing left to fill is the \textit{Files} field appropria
 \subsection{Files}
 
 Files is the second of the two most important fields of the project.
-This is the field the client uses to link attachments parsed from the \textit{Base URL} to the actual placement and names of the them on the disk.
+This is the field the client uses to link attachments parsed from the \textit{base URL} to the actual placement and names of the them on the disk.
 Every file here is defined manually by the addon's maintainer in the following format: \verb|<path to file>;<file identifier>|.
 The two fields must be separated by a semicolon.
 
@@ -197,8 +199,9 @@ An enforcement is present on the client side, making it impossible to go up more
 Furthermore, it is illegal to enter any non-directory locations, such as symlinks or mounted drives.
 
 \subsubsection{File identifier}
+\label{file-identifiers}
 
-This property relates to the attachment names retrieved from the \textit{Base URL}.
+This property relates to the attachment names retrieved from the \textit{base URL}.
 If this identifier is just a name of the file, it is cross-referenced with the attachments found.
 Should it match one, the URL the attachment points to will be used to download and save the file under \path{{path/to/file}/{identifier}}.
 
@@ -266,7 +269,7 @@ As a response, the server provides a list of JSON objects representing data abou
     \item \textbf{id} -- name of the addon,
     \item \textbf{author} -- to be saved locally for displaying,
     \item \textbf{description} -- to be saved locally for displaying,
-    \item \textbf{url} -- \textit{Base URL} which to parse,
+    \item \textbf{url} -- \textit{base URL} which to parse,
     \item \textbf{files} -- definition of files to be searched on said URL,
     \item \textbf{deps} -- list of dependencies, omitted if there are none.
 \end{itemize}
@@ -416,6 +419,62 @@ The cURL library opens up possibilities for future implementations of interactin
 \subsection{Fetching addon files}
 \label{fetching-files}
 
+Due to vast differences in websites needing to be searched for files, the fetching method must be adjusted accordingly.
+Additionally, it must conform to a standardized output which the rest of the program can interpret in a similar manner.
+Its definition is simple:
+\begin{itemize}
+\item \textbf{input} -- the \textit{base URL} and file identifiers (explained in Section \ref{file-identifiers}),
+\item \textbf{output} -- a map of file names to their respective downloadable URIs.
+\end{itemize}
+
+File identifiers are used for the scraping mechanism exclusively and do not necessarily represent the final names of actual files.
+And because they need to be known, the file discovery process is composed of two main steps:
+\begin{enumerate}
+\item retrieve every relevant file from the website, then
+\item evaluate the identifiers to actual file names.
+\end{enumerate}
+
+In the first step, the chosen scraper finds files on the website, these can be attachments to a forum post or a list of assets from the latest GitHub release.
+It retrieves both the actual file names and where to download them from.
+However, a plugin is defined by the file identifiers as specified by users in the database, not what can be found on a website by a scraper.
+As such, step two is cross-referencing those identifiers with the retrieved files, effectively filtering what is unneeded.
+The identifiers are evaluated to actual file names and the corresponding download URI is assigned to them.
+This process follows the given formula:
+\begin{enumerate}
+\item
+Using the exact file identifier, find the file name.
+If a match of the same name is found, retrieve the URI pointed to by it and finish.
+
+\item
+Check whether the file identifier is a valid URL by itself.
+If so, disregard the data scraped from the \textit{base URL} and extract the file name from the back of the identifier then finish.
+
+\item
+Treat the file identifier as a regex pattern and use it against all files retrieved from the \textit{base URL}.
+If matches are found, assume they contain a version number as part of their name, then get the most up-to-date one along with its URI and finish.
+Otherwise, if the regex search returned zero hits, continue to the last step.
+
+\item
+At this point around 95\% of cases have been covered.
+A few more might be still accounted for after introducing a simple solution to complete the process.
+Simply treat the file identifier as a valid file name and append it to the \textit{base URL} to find the download link.
+
+\end{enumerate}
+
+To reference the overview of publishing conventions from Section \ref{publishing-conventions}, three of the major websites are accounted for individually.
+GitHub is taken care of because of its versatile JSON-based API, which is trivial to parse.
+As for AlliedModders or LimeTech, scraping of individual pages is needed.
+Luckily, HTML is syntactically very close to the XML format, making it easily traversable with XPath.
+Much like regex is used for finding substrings in a short and convenient syntax, XPath is a parsing solution used for finding data in XML documents.
+For instance, retrieving a list of values from the second column in a table (used for LimeTech) is simplified to a single query: \verb|//td[position()=2]|.
+AlliedModders is much more tricky in this regard, and many problems must be taken under consideration, outlined under Section \ref{alliedmodders-formus}.
+
+It might happen that the website is not recognized and no scraper can be utilized.
+In such instance nothing more can be done than jumping straight to step four of the evaluation process.
+That is appending the file identifier to \textit{base URL} and hoping for the best.
+This is not an ideal solution yet adds support for plethora of other websites, most notably BitBucket.
+The worst that could happen is an error during installation, designed to be trivially reversible as outlined in the upcoming Section \ref{install-command}.
+
 \subsection{Usage}
 
 There are four modes of operations (commands) available:
@@ -430,6 +489,7 @@ Choosing a mode is simply typing its name after the command, followed by a poten
 Only one mode is performed at a time.
 
 \subsection{Install command}
+\label{install-command}
 
 Typing \verb|smam install| will trigger the functionality responsible for collecting addon metadata and downloading files.
 After the \verb|install| keyword addon IDs should be provided as space-separated arguments.
