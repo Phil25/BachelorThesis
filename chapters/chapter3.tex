@@ -26,7 +26,7 @@ If a file is the source of a plugin (\textit{.sp} extension), it will automatica
 While convenient, it is quite limited.
 Should a plugin make use of libraries outside of the standard, the compilation will fail.
 In such cases, the developer needs to compile the plugin themselves and upload it as a separate attachment.
-Each are given and identified by a unique ID, which is utilized for downloading by being present in the URL.
+Each are given and identified by a unique ID, which is utilized for downloading by being present in the URL\@.
 Unfortunately, there is no API to parse them.
 
 \subsection{GitHub}
@@ -56,7 +56,7 @@ Because of the heuristic nature of the solution for standardizing distribution, 
 The top three mentioned ones are where all plugins are found, save for a few exceptions.
 And all of them require a dedicated solution in order to fetch the files.
 
-Having said that, the only information that is needed about a file is its name and download URL.
+Having said that, the only information that is needed about a file is its name and download URL\@.
 If both are provided as a single string of data, it can be utilized to implement a generic solution agnostic of the website.
 This generic solution must not rely on any sort of API or a scraping method.
 It may only download a file from a specific URL and save it under appropriate name and directory.
@@ -83,7 +83,7 @@ Unfortunately, it may not be used for four main reasons:
 No API to read from the database is available to third-parties.
 Developing it would require support from the website maintainers, and although sought after, cannot be relied upon in early stages of the project.
 \item
-Post attachments are not tied to the plugin ID.
+Post attachments are not tied to the plugin ID\@.
 At best, they may be scraped after finding the associated thread.
 Not to mention the fact, that the file download URLs need not be present in the post at all.
 \item
@@ -191,7 +191,7 @@ This is the property that relates directly to where the file belongs on the disk
 For convenience purposes, it is defined to be relative to SourceMod installation root.
 From here there are the shortest paths to commonly used directories, for instance, \path{mod/addons/sourcemod/plugins}.
 
-Relative paths are supported, such as "\verb|..|" to go up a directory.
+Relative paths are supported, such as ``\verb|..|'' to go up a directory.
 This is required because, as previously mentioned, addon files may not be limited to the SourceMod directories.
 A possible security flaw appears here, as the maintainer can exploit this freedom to move up as many directories as they please.
 This must be accounted for and limited to the server installation, such as \path{mod/}.
@@ -205,7 +205,7 @@ This property relates to the attachment names retrieved from the \textit{base UR
 If this identifier is just a name of the file, it is cross-referenced with the attachments found.
 Should it match one, the URL the attachment points to will be used to download and save the file under \path{{path/to/file}/{identifier}}.
 
-The file identifier can also be a URL.
+The file identifier can also be a URL\@.
 In this case the retrieved attachments are not used, since the URL is already known.
 It is downloaded and saved in a similar manner, whatever legal location \textit{path to file} points to.
 This is the reason the explicit semicolon separation is needed, to clearly distinguish what could be either a URL or a simple file name.
@@ -283,7 +283,7 @@ Furthermore, an action is taken to ensure each addon is provided only once in th
 SourceMod Addon Manager Database is a project consisting of more than just a database and the API to call it.
 This entire endeavour is largely dependent on user support and their accessibility towards it.
 Under \url{https://smamdb.net/interface/} a button can be found which directs users to a Steam website in order to validate their authenticity.
-After logging in through Steam, they will be forwarded to a panel showing their submitted addons, both accepted and pending, shown in Figure \ref{fig:smamdb-panel}.
+After logging in through Steam, they will be forwarded to a panel showing their submitted addons, both accepted and pending, shown in Figure~\ref{fig:smamdb-panel}.
 
 \begin{figure}[H]
   \centering
@@ -296,13 +296,13 @@ Pending appeals are ones awaiting a trusted user to confirm their validity.
 They must be checked for correctness of the properties given but also for the trustworthiness of the submitter.
 Steam API is a great help for the latter.
 It can retrieve whether the user's profile is private, how long the account has existed for, or whether it had any incidents in the past, cheating or otherwise.
-After this step the appeal is moved to the submission section and is available to be retrieved using the Database API.
+After this step the appeal is moved to the submission section and is available to be retrieved using the Database API\@.
 At any moment the submitter is able to edit the metadata of their submissions for correction or potential upkeep requirements.
 
-The \textit{Filter...} field is used to dynamically filter self submitted addons in either section by entering parts of their name.
-Any of the shown ones may be clicked to open up an editing form, shown in Figure \ref{fig:smamdb-editing}.
+The \textit{Filter\dots} field is used to dynamically filter self submitted addons in either section by entering parts of their name.
+Any of the shown ones may be clicked to open up an editing form, shown in Figure~\ref{fig:smamdb-editing}.
 The plus button next to it brings up a menu to add a new submission, for untrusted users, this button is available only for the appeals section.
-Submitting an addon is simply filling a form containing all the fields explained in Section \ref{smamdb-main}.
+Submitting an addon is simply filling a form containing all the fields explained in Section~\ref{smamdb-main}.
 This form looks exactly the same as the editing form, save for \textit{submit} button at the bottom, instead of \textit{delete} and \textit{update}.
 
 \begin{figure}[H]
@@ -328,7 +328,7 @@ As long as it is bound to a hostname, for example \verb|localhost|, the client a
 A self hosted solution may be preferred by communities having their own repository of plugins and wish not to publicize them.
 Another reason might be a plugin developer using it to quickly deploy their work on a testing server located on a different machine.
 To achieve this, one may host the web server on their work computer and use SourceMod Addon Manager to retrieve and install the plugin remotely.
-All that is needed is to point to client application to the right URL.
+All that is needed is to point to client application to the right URL\@.
 Many things are possible by having this flexibility.
 
 \section{SourceMod Addon Manager}
@@ -361,7 +361,7 @@ When everything is in place, compilation of the project will be triggered, produ
 It is also possible to pass the \verb|-c| (configure) flag, to create CMake files only and not trigger the build afterwards.
 \end{enumerate}
 
-Additionally, Conan provides cross-building support, i.e. building for a different platform than the one the process happens on.
+Additionally, Conan provides cross-building support, i.e., building for a different platform than the one the process happens on.
 It does that through the help of profiles.
 A profile is a file containing a pre-configured set of options defining the target and host platforms, or compiler and version, among many others.
 The name of one can be provided during the setup stage and the rest will be taken care of by Conan.
@@ -373,7 +373,7 @@ There can be many game servers set up on a single machine, each having their own
 Files of such addons can be split up across different directories over the server repository, which makes them non-trivial to be detected.
 Because of this, SMAM keeps track of addons it has installed itself, as only then it may know all the relevant files.
 It does that by storing their metadata in a local file named \verb|.smamdata.json|, in the aforementioned SourceMod's root directory.
-Locally stored data is not a perfect one-to-one representation of the one stored remotely in the public database (as described in Section \ref{smamdb-main}).
+Locally stored data is not a perfect one-to-one representation of the one stored remotely in the public database (as described in Section~\ref{smamdb-main}).
 It is, however, very similar.
 This allows the local and remote storage to be parsed using the same mechanism with minor adjustments, saving a lot of logic complexity.
 Namely, the shared fields are \textit{id}, \textit{author}, \textit{description}, \textit{files} and \textit{deps}.
@@ -423,7 +423,7 @@ Due to vast differences in websites needing to be searched for files, the fetchi
 Additionally, it must conform to a standardized output which the rest of the program can interpret in a similar manner.
 Its definition is simple:
 \begin{itemize}
-\item \textbf{input} -- the \textit{base URL} and file identifiers (explained in Section \ref{file-identifiers}),
+\item \textbf{input} -- the \textit{base URL} and file identifiers (explained in Section~\ref{file-identifiers}),
 \item \textbf{output} -- a map of file names to their respective downloadable URIs.
 \end{itemize}
 
@@ -461,25 +461,25 @@ Simply treat the file identifier as a valid file name and append it to the \text
 
 \end{enumerate}
 
-To reference the overview of publishing conventions from Section \ref{publishing-conventions}, three of the major websites are accounted for individually.
+To reference the overview of publishing conventions from Section~\ref{publishing-conventions}, three of the major websites are accounted for individually.
 GitHub is taken care of because of its versatile JSON-based API, which is trivial to parse.
 As for AlliedModders or LimeTech, scraping of individual pages is needed.
 Luckily, HTML is syntactically very close to the XML format, making it easily traversable with XPath.
 Much like regex is used for finding substrings in a short and convenient syntax, XPath is a parsing solution used for finding data in XML documents.
 For instance, retrieving a list of values from the second column in a table (used for LimeTech) is simplified to a single query: \verb|//td[position()=2]|.
-AlliedModders is much more tricky in this regard, and many problems must be taken under consideration, outlined under Section \ref{alliedmodders-formus}.
+AlliedModders is much more tricky in this regard, and many problems must be taken under consideration, outlined under Section~\ref{alliedmodders-formus}.
 
 It might happen that the website is not recognized and no scraper can be utilized.
 In such instance nothing more can be done than jumping straight to step four of the evaluation process.
 That is appending the file identifier to \textit{base URL} and hoping for the best.
 This is not an ideal solution yet adds support for plethora of other websites, most notably BitBucket.
-The worst that could happen is an error during installation, designed to be trivially reversible as outlined in the upcoming Section \ref{install-command}.
+The worst that could happen is an error during installation, designed to be trivially reversible as outlined in the upcoming Section~\ref{install-command}.
 
 \subsection{Usage}
 
 There are four modes of operations (commands) available:
 \begin{enumerate}
-    \item \verb|install| -- install specified addons, i.e. fetch their metadata and download files into appropriate directories, as well as dependencies,
+    \item \verb|install| -- install specified addons, i.e., fetch their metadata and download files into appropriate directories, as well as dependencies,
     \item \verb|remove| -- remove downloaded files and clean up implicit dependencies,
     \item \verb|info| -- show information about currently installed addons,
     \item \verb|search| -- query the database for specified addons.
@@ -506,13 +506,13 @@ The installation process consists of five steps:
 \item
 A GET request is performed to the website pointed to by the \verb|--db-url| flag, defaulting to \url{https://smamdb.net/} if left unspecified.
 This request is supplied with a variable named \verb|ids|, consisting of comma separated list of addon IDs provided by the user.
-In accordance with Section \ref{smamdb-main}, requested addon metadata is returned in the JSON format.
+In accordance with Section~\ref{smamdb-main}, requested addon metadata is returned in the JSON format.
 The data is stored by the application to be used later during the installation process.
 
 \item
 The \verb|.smamdata.json| file is read, providing information on currently installed addons.
 With it, SMAM is able to recognize whether a requested addon or addons need to undergo the installation process.
-If they are found already installed, each is marked as \textit{explicit} (explained in Section \ref{tracking-addons}) and are no longer acted upon.
+If they are found already installed, each is marked as \textit{explicit} (explained in Section~\ref{tracking-addons}) and are no longer acted upon.
 
 \item
 If an addon can be installed, a directory is created in the temporary location defined by the operating system.
@@ -520,7 +520,7 @@ This step acts as initialization of a transaction, as the process is quite error
 
 \item
 Using the parsed addon's metadata, dependencies are iterated through, downloaded and installed; then the requested addon follows suit.
-Files are fetched with the method explained in Section \ref{fetching-files}, then placed in the temporary location.
+Files are fetched with the method explained in Section~\ref{fetching-files}, then placed in the temporary location.
 An appropriate directory structure is created along with each file, constructing a replica of the actual server structure.
 Should installation of any dependency or the addon itself encounter an error, the process ends.
 
@@ -531,6 +531,32 @@ The installation process moves on to the next addon ID specified by the user, en
 \end{enumerate}
 
 \subsection{Remove command}
+
+Correspondingly to installation, \verb|smam remove| cleans the files from the disk and the local cache.
+Additionally, it takes care of removing every dependency which has been installed alongside the specified plugin.
+To remove a dependency plugin, the following three conditions must be satisfied:
+\begin{enumerate}
+\item
+The plugin must have been installed automatically without user's explicit command.
+Supposing \verb|A| is dependent on \verb|B|, executing
+
+\begin{figure}[htp]
+\centering
+\verb|smam install A && smam remove A|
+\end{figure}
+
+will install then remove \verb|B| as well.
+However, if \verb|B| has been specified during installation alongside \verb|A| or installed separately, it will not be removed.
+
+\item
+The plugin must not be required by any other one, i.e., the number of plugins in need of that dependency, excluding itself, must be qual to one.
+Appropriate checks are in place to take care of various edge cases.
+For instance, a situation in which plugin \verb|A| depends on \verb|B| and \verb|B| depends on \verb|A|, removing \verb|A| is not posing a difficulty.
+
+\item
+The user has not passed the \verb|--no-deps| flag, which forces the application not to delete any dependnecies.
+
+\end{enumerate}
 
 \subsection{Info command}
 
