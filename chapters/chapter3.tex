@@ -587,6 +587,32 @@ Among commands the user may pass options:
 
 \section{Unsupported features}
 
+Package managers are understandably very rich in features.
+Modern solutions are equipped with version management, PGP package signing and trust system, installation from source or snapshots with rollbacks, among many more.
+Those features help tremendously in server maintenance and security, however, many of them cannot be utilized in the current state of affairs around SourceMod.
+The reasons are that those features are either impossible to implement, or the benefits are simply not worth the tradeoff for complexity and development time.
+
 \subsection{Installing specific version}
 
-\subsection{Automatic updates}
+With plethora of software out there, it often may happen that parts of the system are incompatible.
+When using a modern package manager, those incompatibilities are immediately detected and the maintainer is promptly informed.
+Version management gives the flexibility of installating a specific version of any package, often being the go-to solution.
+Despite being used in an edge case situation, it is a very effective feature to have should such problems occur.
+
+This requires the database to store a version controlled repository of package files.
+Unfortunately, the SourceMod community does not have this convenience for majority of distributed plugins.
+Each time a developer publishes a new version, the old one is usually lost from the public's perspective.
+
+\subsection{Update command}
+
+Updating is a core aspect of package managers.
+However, similarly to previously mentioned lack of version control around plugin distribution, detecting new versions is non trivial.
+This leaves re-installation of addons to be the best option should anyone want to update.
+
+Luckily, an alternative solution for this already exists in a form of a plugin called \textit{Updater}.
+Developers are required to provide support for it themselves by providing a text file accessible online which it then parses.
+The plugin compares version strings specified in it and the one saved locally, and downloads the files marked as needing updating.
+Additionally, it provides an option to schedule this process.
+Despite explicit developer intervention not being the idea of SMAM, \textit{Updater} is fully compatible with it, provided the files do not change across versions.
+
+\subsection{Installation from source}
