@@ -1,0 +1,43 @@
+\chapter{Conclusion}
+
+\section{Further extensibility}
+
+Current state of the program leaves a fair amount of room for potential extensibility.
+There are features not yet present which could be very valuable to some users making them worth consideration.
+A few of them stem from the specific nature of running a SourceMod server and help in generic set-ups found in practice.
+
+\subsection{Remote file transfer}
+
+An important factor but in some cases also one of the biggest cons of SMAM is that it is a terminal application.
+Managing SourceMod plugins is done per game server basis, not the host machine.
+This means that in the end a game server is only an application with a file repository around it, which is what is provided by various services out there.
+Those services charge users per game server, not the machine, and provide access to the files via popular protocols like FTP\@.
+End users do not have access to installing software, rendering SMAM ultimately irrelevant.
+
+However, a straightforward solution for this issue may be implementable.
+When specifying the destination of a command, i.e., the server file repository, a network protocol along with any needed credentials can be provided.
+This will notify SMAM that the destination is accessed remotely and the specified protocol must be utilized.
+This feature will enable users to install SMAM on their local machine and issue commands that interact with a remote service.
+An example of installing a plugin called \verb|rtd| on a server accessible via FTP under ``example.com'' with the username ``user'' and password ``pass'':
+
+\begin{figure}[htp]
+\centering
+\verb|smam install rtd -d ftp://user:pass@example.com:/home/server/|
+\end{figure}
+
+Implementation-wise, directory traversal will remain the same because paths are already known, but every IO operation will be performed over the network.
+Additional options may be considered, such as utilizing the system's RSA key for SSH transfer, or saving connection credentials in a local configuration file.
+
+Extensions make up a small number of addons, and are specific to the operating system.
+This could pose difficulties in case the remote one differs from the user's.
+But because extension files are usually bundled together for each system available, this solution is partially addressed.
+However, this is not the case on LimeTech.
+Special precautions need to be taken when installing extensions from there.
+Either SMAM must somehow detect the remote's operating system or the user must provide a flag explicitly to fetch the appropriate build.
+
+\subsection{Recreating server state}
+
+\subsection{Detection of installed addons}
+
+\subsection{Generating \textit{updater} file}
+
