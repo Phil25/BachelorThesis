@@ -37,7 +37,36 @@ Either SMAM must somehow detect the remote's operating system or the user must p
 
 \subsection{Recreating server state}
 
+Snapshots may not be a popular feature of package managers, but the local database of installed software could be a great help for capturing a server state.
+Moving the local \verb|.smamdata.json| file may become the only thing needed when migrating a game server.
+Various settings for the installed addons, pose a separate problem, however, those can be set up by nothing more than a text file.
+
+Migrating the entire servers could also provided by SMAM, when coupled with the remote installation feature.
+Such example of a command to move a server in the current directory to a remote one could be completely viable:
+
+\begin{figure}[htp]
+\centering
+\verb|smam migrate --from . --to ftp://example.com:/home/server/|
+\end{figure}
+
 \subsection{Detection of installed addons}
+
+Fresh installation of SourceMod comes with a few officially provided plugins and extensions.
+These addons are not too complex in terms of files and provide the core features only.
+Suffice to say, they will not be loaded in the local config and thus will not be managed by SMAM\@.
+But their simple nature can be a great help for the automatic detection system.
+Other addons are unfortunately too varied to implement anything reliable enough.
 
 \subsection{Generating \textit{updater} file}
 
+The Updater plugin overviewed in Section~\ref{updater-plugin}, can use a text file provided on the web to automatically update other plugins which support it.
+SMAM Database can help developers in this regard as it already has the information which files need to be acquired.
+This will also help negate the needlessly duplicated list of files.
+Plugin developers can provide an update URL to their projects like so:
+
+\begin{figure}[htp]
+\centering
+\verb|https://smamdb.net/?update=myplugin|
+\end{figure}
+
+The \verb|update| argument will indicate that the website needs to generate text in a format which the Updater plugin can parse.
