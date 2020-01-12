@@ -97,5 +97,20 @@ And the database has no need to host the files by itself.
 
 \section{LinuxGSM}
 
+Short for Linux Game Server Managers, LinuxGSM is a CLI tool and a set of Bash scripts, which take the burden of deploying and managing servers of various games.
+In case of Source engine servers, it is essentially a wrapper around SteamCMD, an official installer and updater of dedicated game servers on Steam.
+While being versatile, LinuxGSM provides much simpler usage explicitly tailored to its supported servers.
+This makes deploying one as simple as running a script for the selected game.
+On top of that, it brings extra quality of life features, like monitoring, back ups, alerts and a debug mode.
+
+Another noteworthy feature is supporting the installation of mods for some game servers.
+The user passes the \verb|mods-install| parameter to the script followed by the name of the mod, and its latest version is automatically downloaded and set up.
+This can be used to install SourceMod, which is the first step when deploying a custom server.
+After that comes the installation of plugins and extensions for SourceMod itself.
+However, the nature of plugin distribution is very irregular, requiring a tailored installation script for each of them.
+This makes it very unreasonable to be utilized in such manner, and a more complete system is required, explicitly developed to deal with those inconsistencies.
+
 \section{Updater plugin}
 \label{updater-plugin}
+
+\section{Management plugins}
