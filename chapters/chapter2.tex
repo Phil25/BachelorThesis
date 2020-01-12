@@ -113,4 +113,30 @@ This makes it very unreasonable to be utilized in such manner, and a more comple
 \section{Updater plugin}
 \label{updater-plugin}
 
+In October 2011 a plugin for SourceMod called Updater was released.
+It has been written to automatically update any plugin which explicitly provides support for it.
+The idea is as follows:
+
+\begin{enumerate}
+    \item A developer has their plugin register itself to Updater.
+    \item During registration, a URL is provided to an online text file listing the most up to date version and all files of the plugin.
+    \item Updater periodically checks for version differences and downloads the files when necessary.
+\end{enumerate}
+
+This file, which holds the information required to update a plugin, is referred to as the ``update file.''
+It contains the version string of the most recent release, a few optional notes about the changes, and a list of files which constitute this plugin.
+There may also be a version string of the last but one release coupled with a list of files which have been altered since then, specified manually by the developer.
+If that version matches the currently installed one, and there is a newer one available, Updater will download only the specified files.
+Unnecessarily downloading everything each update is wasteful for all kinds of plugins, especially larger ones, and optimizations are always appreciated.
+
+The regular list of files defines them in a format of a path, starting from the root of either SourceMod installation or the mod.
+The update file is assumed to be found in that root, and every other file in appropriate subdirectories, effectively replicating the local structure.
+This puts distribution constrains on the developer, as they are forced to use an online file repository to host their project, should they wish to support Updater.
+While definitely preferred, within the SourceMod community websites like GitHub, Bitbucket or similar are not the primary means of distribution.
+Developers are used to doing nothing more than creating a thread on the official forums promoting their plugin, and simply attaching its files as attachments.
+
+Updater understandably cannot be used to install plugins and requires explicit developer support to even update one.
+It is a great solution for what it was designed for, but still requires a lot of intervention from the user and developer side both.
+While automatic updates is a step in the right direction, support for the versatile distribution means is very much sought after.
+
 \section{Management plugins}
