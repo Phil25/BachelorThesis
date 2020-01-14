@@ -6,6 +6,21 @@ Current state of the program leaves a fair amount of room for potential extensib
 There are features not yet present which could be very valuable to some users making them worth consideration.
 A few of them stem from the specific nature of running a SourceMod server and help in generic set-ups found in practice.
 
+\subsection{Search command}
+
+A proper built-in search feature is an important quality of life improvement for a package manager.
+It allows users to be able to query the remote database for packages straight from the place they use to install one.
+Executing \verb|smam search| will do just that.
+From all four commands this is the only one where specifying the server directory could be optional, as no real file interaction is performed.
+However, specifying the directory has the benefit of the application being able to tell which plugins already are installed.
+
+The list of results must be displayed in a neat and descriptive manner, and must be optimized for consecutive searches.
+A popular solution for this is caching. (TODO: cite apt-get man page)
+The list of packages from available remote repositories is saved locally, then queried for installation or search requests.
+Furthermore, the remote must be configured to respond in a specific manner to search queries.
+Namely, it must send the name, description, category and applicable games.
+In case the search must be more descriptive, it can additionally send the ID of the plugin, and a list of files and dependencies.
+
 \subsection{Remote file transfer}
 
 An important factor but in some cases also one of the biggest cons of SMAM is that it is a terminal application.

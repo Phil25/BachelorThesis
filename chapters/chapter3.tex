@@ -562,12 +562,7 @@ The user has not passed the \verb|--no-deps| flag, which forces the application 
 
 When the user types \verb|smam info|, followed by a list of plugin names, information about each is displayed.
 This command queries only the local database and is used to retrieve all kinds of information about insalled plugins.
-
-\subsection{Search command}
-
-Instead of querying only the local database, \verb|smam search| will also query the specified remote database.
-From all four commands this is the only one where specifying the server directory is optional, as no real file interaction is done.
-However, specifying the directory has the benefit of the application being able to displayed which plugins are already installed.
+TODO: write more
 
 \subsection{Options}
 
@@ -584,6 +579,16 @@ Among commands the user may pass options:
     \item \verb|-d [--destination]| -- specify where to look for the server directory;
     \item \verb|-db-url| -- URL of the database to fetch metadata from, defaults to \url{https://smamdb.net/}.
 \end{itemize}
+
+\subsection{Implementation}
+
+Package managing solutions are heavily procedural in nature.
+As such, TODO
+
+The application has four modes of operations, adhering (TODO: better word) to the aforementioned commands.
+Each of the modes uses derivatives (TODO: correct?) of the \verb|Operation| class as its building blocks.
+\verb|Operation|s define specific actions, for instance, one checks whether an addon has already been installed.
+They can only be run via the \verb|Executor|, a class which must be instantiated and method \verb|Run| must be chained to perform \verb|Operation|s in an order.
 
 \section{Unsupported features}
 
