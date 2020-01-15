@@ -10,4 +10,24 @@ A plugin itself is just a binary file that is loaded and run by SourceMod.
 However, complications may begin when it is distributed with other files such as configuration, localization or more.
 Most of such files must be placed in their individual directories to properly install a SourceMod plugin.
 More cases may arise with more advanced plugins, sometimes introducing the need to navigate across the entire server file repository.
-Moreover, there exists no standardized mean of distribution, making the administrator rely entirely on instructions provided by the author, wherever the plugin was published.
+Moreover, there exists no standardized mean of distribution, making the administrator rely entirely on instructions provided by the author, wherever the plugin is published.
+
+By introducting an intermediary system consisting of a client application and a server hosting a database, these problems are mitigated.
+The database accessible via a web server is effectively standardizing distribution by providing necessary information needed to install a plugin.
+The client, SMAM, then uses that information to download and install plugins proper.
+All this is achievable without explicit developer intervention or changing means of distribution, and supports the most important websites hosting required files.
+
+\section{Chapter outline}
+
+The following chapter presents how SourceMod is installed and utilized, and with that, the introduction to the server file structure and its caveats.
+Many newbie server administrators and plugin developers face common problems in this matter.
+A few tools come to help in their endeavors, and while successfully providing it, not every problematic aspect is addressed.
+
+Chapter~\ref{chapter-solution} takes a look at current conventions which could be exploited to implement a reliable solution.
+From those conventions it delves into how they are utilized in the employed system, as well as the overview of that system.
+More in-depth look is taken at both the client application itself, and the underlying web server it works in conjunction with.
+
+TODO: Tests
+
+Conclusions will wrap things up, and give an outlook on how the project could reflect in the community.
+Most importantly, it will plan ahead of what actions must be taken to further support SourceMod developers and server owners alike.
