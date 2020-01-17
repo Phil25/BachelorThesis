@@ -4,7 +4,7 @@
 
 To better investigate the impact on the community, a questionnaire has been sent and filled by various active members of the SourceMod community.
 It was distributed on the official AlliedModders forums, promoted on the SourceMod Discord server, and sent to revelant people willing to provide their answers.
-Those answers were collected from 44 of them, where 5 were server owners, 6 were developers and the remaining 33 were both an owner and a developer.
+Those answers were collected from 44 of them, where 7 were server owners, 7 were developers and the remaining 30 were both an owner and a developer.
 Subjects varied in their involvement and time in the community, some being members less than a year, while others where for over 9 years.
 
 A special thanks goes to two moderators of the Discord server and heads of the community: \textbf{asherkin}, also the owner of LimeTech, and \textbf{headline}.
@@ -60,18 +60,196 @@ They helped in getting this questionnaire to more people than a single person co
 
 \section{Results}
 
-Below are the questions themselves and their compiled results.
-
 \subsubsection{Are you a developer and/or a server owner?}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar,
+      enlargelimits=0.25,
+      symbolic x coords={developer,server owner,both},
+      xtick=data,
+      nodes near coords,
+      bar width=30,
+      width=12cm,
+    ]
+    \addplot coordinates {(developer,7) (server owner,7) (both,30)};
+    \end{axis}
+  \end{tikzpicture}
+\end{figure}
+
+The vast majority of people -- over 68\% -- claim they take on the responsibility for both plugin development and server management.
+Developers are required to know the basics of hosting and managing a server for the sake of testing their products.
+In rare cases it may also happen that someone who is not a programmer may need to edit the source code of a plugin, and recompile it themselves.
+This is mostly due to the fact that plugin are sometimes left abandoned.
 
 \subsubsection{How long have you been a part of the SourceMod community?}
 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar,
+      enlargelimits=0.25,
+      symbolic x coords={less than a year,1-3 years,3-6 years,6-9 years,more than 9 years},
+      xtick=data,
+      nodes near coords,
+      bar width=30,
+      width=12cm,
+      x tick label style={
+        rotate=45,
+        anchor=east,
+      },
+    ]
+    \addplot coordinates {(less than a year,2) (1-3 years,10) (3-6 years,12) (6-9 years,7) (more than 9 years,13)};
+    \end{axis}
+  \end{tikzpicture}
+\end{figure}
+
+Almost 30\% have been a part of the community for a very long time now.
+SourceMod itself is the counterpart of AMX Mod X, a similar server mod for GoldSource, the previous iteration of the Source engine, from 1996 \cite{valve-goldsrc}.
+People involved in it moved onward with the update to the newer engine and games alike.
+
 \subsubsection{Are you familiar with package managers and ever used one?}
 
-\subsubsection{Do you own a SourceMod server? (ignore if not)}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar,
+      enlargelimits=0.25,
+      symbolic x coords={Yes and used one,Familiar,Unfamiliar},
+      xtick=data,
+      nodes near coords,
+      bar width=30,
+      width=12cm,
+    ]
+    \addplot coordinates {(Yes and used one,20) (Familiar,8) (Unfamiliar,16)};
+    \end{axis}
+  \end{tikzpicture}
+\end{figure}
+
+SourceMod supports all major operating systems -- Linux, Windows and macOS\@.
+Of those systems, macOS is quite rare and Windows is not very popular with package managers.
+Despite Chocolatey (TODO: cite) being a popular solution for those who wish to use one on that system, it is unnecessary to manage a server on Windows.
+
+\subsubsection{Do you own a SourceMod server?}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar,
+      enlargelimits=0.25,
+      symbolic x coords={I rent a game server,I own a VPS/dedicated machine,I self host it},
+      xtick=data,
+      nodes near coords,
+      bar width=30,
+      width=8cm,
+      x tick label style={
+        rotate=45,
+        anchor=east,
+      },
+    ]
+    \addplot coordinates {(I rent a game server,11) (I own a VPS/dedicated machine,33) (I self host it,13)};
+    \end{axis}
+  \end{tikzpicture}
+\end{figure}
+
+Above are listed the three popular means of owning a SourceMod server.
+This is a multi-choice question and respondends were able to select any or none.
+Two out of 44 of them claimed they did not own one.
+
+Eleven people are renting a game server, which is the cheapest solution out of all in case you wish to run a single server and have the system set up for you.
+Provides of this service sell it by server slots, which define how many concurrent players can be connected.
+Because access to the underlying system is denied by the provider, SMAM cannot be utilized.
+
+The majority of people -- 33 -- own a dedicated machine or a virtual private server.
+The latter being a virtual emulation of the former (TODO: cite).
+This is the most scalable way of managing a game server as the configuration, including available slots, is entirely in the server owners' hands.
+Self hosting is very similar to this, only with a direct access to the physical machine, which 11 people claimed they have.
 
 \subsubsection{Do you feel the SourceMod community needs a package manager?}
 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar,
+      enlargelimits=0.25,
+      symbolic x coords={Very much,Yes,Uncertain,No},
+      xtick=data,
+      nodes near coords,
+      bar width=30,
+      width=8cm,
+    ]
+    \addplot coordinates {(Very much,12) (Yes,11) (Uncertain,14) (No,7)};
+    \end{axis}
+  \end{tikzpicture}
+\end{figure}
+
+The SourceMod community has matured well without the need of a package manager.
+Almost 43\% of people were unsure if such a solution will be utilized.
+However, just over a half -- 23 persons -- responded in a positive way, most of which were very sure of the necessity.
+Those who answered negatively are in a minority of below 16\%.
+
 \subsubsection{Would you use a package manager?}
 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar,
+      enlargelimits=0.25,
+      symbolic x coords={Very often,Yes,Uncertain,No},
+      xtick=data,
+      nodes near coords,
+      bar width=30,
+      width=8cm,
+    ]
+    \addplot coordinates {(Very often,11) (Yes,12) (Uncertain,11) (No,10)};
+    \end{axis}
+  \end{tikzpicture}
+\end{figure}
+
+This time addressing the respondends themselves, answers are comparative.
+Namely, a bit over half claimed they would use one should it be available.
+However, as uncertainty shrunk, so did negativity grew, matching at 25\% and 23\% of answers respectively.
+
 \subsubsection{What do you find most problematic when you want to install a plugin?}
+
+This is an open question and people could input any answers they wished.
+The two most recurring topics here were dependency resolution and following installation steps.
+A slightly lower but still notably ranked were topics like transferring files, manual clean-up on removal and lack of building from source for security reasons.
+Few claim to have implemented their own solutions to the listed problems.
+
+The standard SourcePawn library allows plugins to do great many things without being dependent on third-party ones.
+Package dependencies, in general, are not so prominent within SourceMod as much as, say, within a Unix system.
+Yet people still find this an issue worth taking into consideration.
+Dependency resolution and automatic installation are the two primary issues that SourceMod Addon Manager solves.
+
+\subsubsection{What is your most important feature in a fully functioning package manager for SourceMod, besides automated installation and removal?}
+
+Available for selection was a predetermined set of answers as well as possibility to input one's own.
+Likewise, dependency resolution scored the highest with over 36\% of answers, graphical interface followed right after with over 13\%.
+The reminder were split almost evenly, with 3 people wishing for each of the following:
+
+\begin{itemize}
+    \item installation on a remote machine,
+    \item built-in search,
+    \item neatly showing current plugins,
+    \item cross platform (other than Linux),
+    \item server shapshots \& migration.
+\end{itemize}
+
+Besides the above mentioned, six respondents input their own answers.
+The prominent topics in this case are mainly related to support, such as bug fixes and performance improvements.
+
+\section{Additional observations}
+
+TODO
+
+9+ experience when initially on forums
+
+Filter by experience, familiarity with package managers
