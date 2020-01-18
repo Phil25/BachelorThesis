@@ -561,9 +561,18 @@ The user has not passed the \verb|--no-deps| flag, which forces the application 
 
 \subsection{Info command}
 
-When the user types \verb|smam info|, followed by a list of plugin names, information about each is displayed.
-This command queries only the local database and is used to retrieve all kinds of information about insalled plugins.
-TODO: write more
+When the user types \verb|smam info|, the application shows a list of installed plugin names in a compact manner.
+In case the command is followed by a list of plugin names, more detailed information is displayed about each.
+This command queries only the local database and is used to retrieve all kinds of information about installed plugins, including:
+
+\begin{itemize}
+    \item the name of the plugin,
+    \item its author,
+    \item its description,
+    \item whether it has been installed explicitly or not,
+    \item the list of files it manages, and
+    \item the list of dependencies it requires.
+\end{itemize}
 
 \subsection{Options}
 
