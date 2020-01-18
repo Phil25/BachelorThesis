@@ -3,25 +3,26 @@
 \section{Source engine dedicated servers}
 
 Valve's game engine, Source, is the engine behind many popular titles such as Half-Life 2, Counter-Strike: Global Offensive or Team Fortress 2 (TODO: refernce games).
-It allows for running headless instances of any of its games, internally called \textit{mods}, through their Source Dedicated Server tool (srcds) on Linux, Windows and MacOS.
+It allows for running headless instances of any of its games, internally called \textit{mods}, through their Source Dedicated Server tool (srcds) on Linux, Windows and macOS\@.
 The term \textit{mods} comes from the fact that originally all games started as extensions of the base game -- Half-Life 2.
 
 The directory structure is the most relevant aspect of the server and both convention and the engine enforce placement of files in specific directories.
-In the root of the server the most important ones are:
+In the root of the server the most relevant ones are:
+
 \begin{itemize}
-    \item \textbf{bin} -- TODO,
-    \item \textbf{\textit{mod}} -- abbreviated name of the mod, stores game specific assets,
-    \item \textbf{hl2} -- assets from the base game, Half-Life 2,
-    \item \textbf{cfg} -- configuration presets for the game and server extensions.
+    \item \verb|mod| -- abbreviated name of the mod, stores game specific assets,
+    \item \verb|hl2| -- assets from the base game, Half-Life 2,
+    \item \verb|cfg| -- configuration presets for the game and server extensions.
 \end{itemize}
-Under \textit{mod}, there exists another structure, mostly to group different kinds of assets, like models, textures.
-The noteworthy directory is \textbf{addons}.
+
+Under \textit{mod}, there exists another structure, mostly to group different kinds of assets, like models or textures.
+The noteworthy directory is \verb|addons|.
 In it, each folder corresponds to different extensions, C++ libraries that modify the behavior of the server \cite{server-plugins}.
 
 Source engine exposes a set of interfaces they may interact with, for instance, capture an event of a player connecting.
 Unfortunately, these interfaces are the only API an extension may safely use.
 Interacting with server classes is possible, but not without risks.
-Afterwards, the developer needs to build the extension along with the Source SDK.
+Afterwards, the developer needs to build the extension along with the Source SDK\@.
 Setting up the environment may be challenging as there are separate releases for each of the platforms.
 
 The caveats of extension development are twofold:
@@ -42,13 +43,13 @@ Developers are granted features such as a MySQL database driver or a parser for 
 
 Installing SourceMod is as simple as extracting its archive into \path{mod/addons/}, after which \path{mod/addons/sourcemod/} will look as follows:
 \begin{itemize}
-    \item \textbf{bin} -- SourceMod specific binaries,
-    \item \textbf{cfg} -- configuration files for plugins or extensions,
-    \item \textbf{plugins} -- plugin binaries,
-    \item \textbf{extensions} -- extension binaries,
-    \item \textbf{gamedata} -- text files storing game's variable memory offsets and function signatures to be shared across plugins for more complex extensibility capabilities,
-    \item \textbf{scripting} -- plugin sources and the SourcePawn compiler,
-    \item \textbf{translations} -- text files storing phrases for localization.
+    \item \verb|bin| -- SourceMod specific binaries,
+    \item \verb|cfg| -- configuration files for plugins or extensions,
+    \item \verb|plugins| -- plugin binaries,
+    \item \verb|extensions| -- extension binaries,
+    \item \verb|gamedata| -- text files storing game's variable memory offsets and function signatures to be shared across plugins for more complex extensibility capabilities,
+    \item \verb|scripting| -- plugin sources and the SourcePawn compiler,
+    \item \verb|translations| -- text files storing phrases for localization.
 \end{itemize}
 
 A plugin is a binary compiled by the SourcePawn compiler, it is independent of the operating system and handled exclusively by SourceMod.
@@ -57,11 +58,11 @@ Both plugins and extensions are loaded by SourceMod, but the latter are C++ libr
 To give an example, a plugin is a menu pop-up in the game, while an extension is a database driver.
 
 In relation to the aforementioned directory structure and Source engine conventions, SourceMod expects a sort of order.
-A plugin loads localization only from \textbf{translations}, or function signatures from \textbf{gamedata}.
+A plugin loads localization only from \verb|translations|, or function signatures from \verb|gamedata|.
 Ultimately, it is up to the plugin what to do and where to load its files from.
 For instance, if it comes bundled with assets, they usually are not placed in the SourceMod directory at all, but rather two directories up, alongside server files.
 
-Considering a server is usually on a remote machine, it becomes cumbersome to download and install each file in its appropriate directory through CLI.
+Considering a server is usually on a remote machine, it becomes cumbersome to download and install each file in its appropriate directory through CLI\@.
 Operators understandably resolve to downloading the plugin to their computers, then using an FTP client to send the files over.
 This process is not ideal and graphical approaches are not very flexible nor extensible.
 Furthermore, it is problematic to automate, given there exists no standard on how to distribute plugins.
@@ -138,5 +139,3 @@ Developers are used to doing nothing more than creating a thread on the official
 Updater understandably cannot be used to install plugins and requires explicit developer support to even update one.
 It is a great solution for what it was designed for, but still requires a lot of intervention from the user and developer side both.
 While automatic updates is a step in the right direction, support for the versatile distribution means is very much sought after.
-
-\section{Management plugins}
