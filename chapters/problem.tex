@@ -2,7 +2,7 @@
 
 \section{Source engine dedicated servers}
 
-Valve's game engine, Source, is the engine behind many popular titles such as Half-Life 2, Counter-Strike: Global Offensive or Team Fortress 2 (TODO: refernce games).
+Valve's game engine, Source, is the engine behind many popular titles such as Half-Life 2, Counter-Strike: Global Offensive or Team Fortress 2 \cite{valve-source}.
 It allows for running headless instances of any of its games, internally called \textit{mods}, through their Source Dedicated Server tool (srcds) on Linux, Windows and macOS\@.
 The term \textit{mods} comes from the fact that originally all games started as extensions of the base game -- Half-Life 2.
 
@@ -15,8 +15,8 @@ In the root of the server the most relevant ones are:
     \item \verb|cfg| -- configuration presets for the game and server extensions.
 \end{itemize}
 
-Under \textit{mod}, there exists another structure, mostly to group different kinds of assets, like models or textures.
-The noteworthy directory is \verb|addons|.
+Under \verb|mod|, there exists another structure, mostly to group different kinds of assets, like models or textures.
+The noteworthy directory in there is \verb|addons|.
 In it, each folder corresponds to different extensions, C++ libraries that modify the behavior of the server \cite{server-plugins}.
 
 Source engine exposes a set of interfaces they may interact with, for instance, capture an event of a player connecting.
@@ -34,7 +34,7 @@ This leaves the developer to implement their own solutions, which may unnecessar
 The fact that extensions are natively built C++ libraries forces the developer to write and provide support for platform-dependent code.
 Using different SDK's across platforms adds great overhead to both development and deployment.
 \end{enumerate}
-SourceMod seeks to alleviate these problems by wrapping the underlying C++ API with its own, exposed in a simple scripting language called SourcePawn.
+SourceMod seeks to alleviate these problems by wrapping the underlying C++ API with its own, exposed in a simple scripting language called SourcePawn \cite{alliedmodders-sourcepawn}.
 Developing a SourceMod plugin allows programmers to extend the functionality of game servers in OS-agnostic way.
 On top of that, the new API provides them with more tools beyond than just altering server behavior.
 Developers are granted features such as a MySQL database driver or a parser for Valve-specific configuration files right from the base API.
@@ -86,19 +86,19 @@ Along with that automation come three perks, which are missing from the SourceMo
     \item standardizing the process of distribution.
 \end{itemize}
 
-The latter is usually thanks to a database associated with the package manager (TODO: cite).
-It provides the metadata on how to deal with a package, whether it would be its installation, removal, building from source or resolving dependencies.
+The latter is usually thanks to a single or multiple public databases associated with the package manager.
+They provide the metadata on how to deal with packages, whether it would be their installation, removal, building from source or resolving dependencies.
 This makes most package managers rely on external sources of information, either official or third-party.
-An important thing to note here is that a database is available right from the inception of the corresponding package manager.
+An important thing to note here is that the databases are available right from the inception of the corresponding package manager.
 
 Implementing exactly the same solution for SourceMod plugins would force all developers to update their mean of distribution, should they want to make use of it.
 Considering the community has been maturing for over ten years now, this severely undermines the usefulness of a dedicated package manager.
-The developer must be in charge of the files, but not necessarily the metadata.
-And the database has no need to host the files by itself.
+The original developer must be in charge of file distribution, but not necessarily the metadata containing installation instructions for these files.
+Because of this, the database has no need to host any files, only store text.
 
 \section{LinuxGSM}
 
-Short for Linux Game Server Managers, LinuxGSM is a CLI tool and a set of Bash scripts, which take the burden of deploying and managing servers of various games.
+Short for Linux Game Server Managers, LinuxGSM \cite{linux-gsm} is a CLI tool and a set of Bash scripts, which take the burden of deploying and managing servers of various games.
 In case of Source engine servers, it is essentially a wrapper around SteamCMD, an official installer and updater of dedicated game servers on Steam.
 While being versatile, LinuxGSM provides much simpler usage explicitly tailored to its supported servers.
 This makes deploying one as simple as running a script for the selected game.
@@ -114,7 +114,7 @@ This makes it very unreasonable to be utilized in such manner, and a more comple
 \section{Updater plugin}
 \label{updater-plugin}
 
-In October 2011 a plugin for SourceMod called Updater was released.
+In October 2011 a plugin for SourceMod called Updater \cite{alliedmodders-updater} was released.
 It has been written to automatically update any plugin which explicitly provides support for it.
 The idea is as follows:
 

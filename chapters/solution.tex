@@ -41,8 +41,8 @@ It is then possible to iterate all the uploaded assets and read their names or U
 
 \subsection{LimeTech}
 
-LimeTech is not used by the public but rather a single developer, who also is a major contributor to both SourceMod and SourcePawn.
-The website hosts files for many popular extensions, making it worthwhile to consider when finding the way to standardize distribution.
+LimeTech \cite{limetech} is not used by the public but rather a single developer, who also is a major contributor to both SourceMod and SourcePawn.
+The website is his portfolio but additionally hosts files for many popular extensions, making it worthwhile to consider when finding the way to standardize distribution.
 
 Like the forums and GitHub, it lacks a URL to download the latest publication of a project from.
 And due to a lack of an API, one must resolve to scraping.
@@ -97,7 +97,8 @@ Furthermore, SourceMod extensions have their own section, unrelated completely t
 There, no plugin ID or database entry is present.
 And considering extensions have an analogous installation process and may be dependencies to other addons, they are worth supporting.
 Lastly, in exceptionally rare situations, an extension may be simplified to become a plugin, and moved to the \textit{Plugins} section.
-No database triggers will run, and it will be left as an atypical plugin lacking its ID.
+No database triggers will run, and it will be left as an atypical plugin lacking its ID\@.
+This has affected the No Thriller Taunt plugin \cite{alliedmodders-no-thriller}.
 \end{enumerate}
 
 To combat the above issues, a custom database is set up.
@@ -234,10 +235,10 @@ For implementation-specific reasons, dependency addons must be installed prior.
 
 \subsubsection{Security}
 
-The database is set up on a virtual private server provided by \textit{Digital Ocean}.
+The database is set up on a virtual private server provided by \textit{Digital Ocean} \cite{digital-ocean}.
 Interaction is achieved through an web server bound to a custom domain name -- \path{smamdb.net}.
-Communication with that server is end-to-end encrypted with TLS using a certificate issued by \textit{Let's Encrypt}.
-This warrants three important aspects of fetching packages:
+Communication with that server is end-to-end encrypted with TLS using a certificate issued by \textit{Let's Encrypt} \cite{lets-encrypt}.
+This warrants three important aspects of fetching packages \cite{ibm-tls-guarantees}:
 \begin{enumerate}
 \item \textbf{Authenticity} ensures that the web server the client interacts with is indeed owned by a trusted party.
 \item \textbf{Integrity} takes care of fetching the data fully and correctly, without falling victim to potential tampering during transfer.
@@ -250,7 +251,7 @@ This, of course, does not warrant full safety as the metadata itself could lead 
 One reason could be that the developer who is publishing their work fancies distributing it on their own website, which happens to be unsecure.
 Another reason could be that the attacker had gained access to publishing or editing plugins, rendering them compromised.
 
-By using the OAuth2 protocol, Valve provides third-party authentication mechanism against their Steam services.
+By using the OAuth2 \cite{valve-oauth2} protocol, Valve provides third-party authentication mechanism against their Steam services.
 It is by these mechanisms that publishers are recognised and validated, as each of them is expected to have a Steam account.
 Not everyone is allowed to publish their work on the website by default.
 The user must be trusted in order to have access, and that trust is granted by the owner.
@@ -340,7 +341,7 @@ SMAM is distributed as a standalone binary natively compiled from modern, idioma
 When the time comes, making use of many of the C++20 features is planned.
 
 The target platforms are Linux, Windows and macOS, considering SourceMod itself is available on each.
-To support this, the application is built with the help of a powerful, cross-platform build system utilizing CMake and Conan tooling.
+To support this, the application is built with the help of a powerful, cross-platform build system utilizing CMake \cite{cmake} and Conan \cite{conan} tooling.
 CMake is a build system generator which creates and configures files for selected the build utility, such as UNIX Makefiles or Visual Studio.
 Conan, being a praiseworthy supplement for CMake, additionally wraps the whole process in a cross-platform dependency management solution.
 
