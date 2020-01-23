@@ -479,12 +479,11 @@ The worst that could happen is an error during installation, designed to be triv
 
 \subsection{Usage}
 
-There are four modes of operations (commands) available:
+Currently, there are three modes of operations (commands) available:
 \begin{enumerate}
     \item \verb|install| -- install specified addons, i.e., fetch their metadata and download files into appropriate directories, as well as dependencies,
-    \item \verb|remove| -- remove downloaded files and clean up implicit dependencies,
+    \item \verb|remove| -- remove downloaded files and clean up implicitly installed dependencies,
     \item \verb|info| -- show information about currently installed addons,
-    \item \verb|search| -- query the database for specified addons.
 \end{enumerate}
 
 Choosing a mode is simply typing its name after the command, followed by a potential list of addons passed as space-separated arguments: \verb|smam install rtd|.
