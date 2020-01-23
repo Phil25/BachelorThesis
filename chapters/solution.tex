@@ -49,7 +49,7 @@ And due to a lack of an API, one must resolve to scraping.
 All the project releases hosted on the website are archives.
 They are kept on pages of their own, in a three-column table of operating systems to specific versions.
 A caveat here may be that a cell is empty, either because a certain release for a specific system is not out yet, or is simply not supported.
-Thus a traversal of the table is required to find the next, latest one available.
+Thus, a traversal of the table is required to find the next, latest one available.
 
 \subsection{Other websites}
 
@@ -133,7 +133,7 @@ To properly define a package, the following metadata must be provided, for speci
 
 \subsection{Fields utilized for searching}
 
-Optional but equally as important aspects of the database are its search capabilities.
+Optional but equally important aspects of the database are its search capabilities.
 Akin to AlliedModders' database, there exist fields like description, category or games.
 The category is a single choice list: \textit{Admin Commands}, \textit{Fun Stuff}, \textit{Gameplay}, \textit{General Purpose}, \textit{Server Management}, \textit{Statistical}, \textit{Technical/Development}.
 Similarly to author, description, or games, it is used purely for searching purposes.
@@ -183,7 +183,7 @@ In such cases, the only thing left to fill is the \textit{Files} field appropria
 \subsection{Files}
 
 Files is the second of the two most important fields of the project.
-This is the field the client uses to link attachments parsed from the \textit{base URL} to the actual placement and names of the them on the disk.
+This is the field the client uses to link attachments parsed from the \textit{base URL} to their actual placement and file names, as they appear on the disk.
 Every file here is defined manually by the addon's maintainer in the following format: \verb|<path to file>;<file identifier>|.
 The two fields must be separated by a semicolon.
 
@@ -213,7 +213,7 @@ It is downloaded and saved in a similar manner, whatever legal location \textit{
 This is the reason the explicit semicolon separation is needed, to clearly distinguish what could be either a URL or a simple file name.
 
 There is a third possibility, in case the name of the file is not static.
-The actual name itself is not prone to change, however, the may be situations when a developer includes a version number.
+The actual name itself is not prone to change, however, there may be situations when a developer includes a version number.
 This happens most often when a whole project is archived but may also come up when the plugin is a single binary file.
 For this purpose, the support for regex-defined file identifiers is needed.
 This will ensure the version number could be dynamic.
@@ -224,7 +224,7 @@ Only one may be valid, however assuming their only difference is the version num
 
 Dependencies on the forums are for the end user to note the prerequisites, they are listed as plugin IDs linking to appropriate threads.
 The dependencies field in this project are not specifically for viewing, but are rather used in the installation.
-In practise, it is quite rare for a plugin to have dependency on another.
+In practice, it is quite rare for a plugin to have dependency on another.
 But the less often it happens, the more surprising it may be when a plugin refuses to load.
 
 This field is simply a string of addon names separated by comma.
@@ -248,11 +248,11 @@ This warrants three important aspects of fetching packages \cite{ibm-tls-guarant
 Plugins have access to many sensitive parts of the server including database connections or the file system.
 Because of this, it is important to ensure authenticity of the metadata retrieved.
 This, of course, does not warrant full safety as the metadata itself could lead to vulnerable endpoints.
-One reason could be that the developer who is publishing their work fancies distributing it on their own website, which happens to be unsecure.
+One reason could be that the developer who is publishing their work fancies distributing it on their own website, which happens to be not secured properly.
 Another reason could be that the attacker had gained access to publishing or editing plugins, rendering them compromised.
 
 By using the OAuth2 \cite{valve-oauth2} protocol, Valve provides third-party authentication mechanism against their Steam services.
-It is by these mechanisms that publishers are recognised and validated, as each of them is expected to have a Steam account.
+It is by these mechanisms that publishers are recognized and validated, as each of them is expected to have a Steam account.
 Not everyone is allowed to publish their work on the website by default.
 The user must be trusted in order to have access, and that trust is granted by the owner.
 Furthermore, each submission is tied to the submitter, they may edit or delete their submissions but not others'.
@@ -319,7 +319,7 @@ This form looks exactly the same as the editing form, save for \textit{submit} b
 The database website and the client application are designed to be disjoint entities.
 The former exposes an API which returns data in JSON, which can be parsed by a multitude of things, due to the popularity of the format.
 Likewise, calls are simple GET requests, making them trivial to be performed from many bare-bones solutions, like the \verb|curl| program.
-The burden of implementation lays on the client application, it is where the complexity of the system is located.
+The burden of implementation is placed on the client application, it is where the complexity of the system is located.
 
 The website is a completely different matter.
 After all, the custom interface exists for human interaction and is not needed by the client.
@@ -347,7 +347,7 @@ Conan, being a praiseworthy supplement for CMake, additionally wraps the whole p
 
 \subsection{Building}
 
-The building operations are entirely abstracted by Conan and are split into a two step process:
+The building operations are entirely abstracted by Conan and are split into a two-step process:
 \begin{enumerate}
 \item
 Firstly, \verb|conan install| command is run, specifying the root directory of the source code.
@@ -390,7 +390,7 @@ It may also fall victim to user tampering, which could easily invalidate the for
 These issues are addressed in the following ways:
 \begin{enumerate}
 \item
-Placing a period at the beginning of the file in UNIX-based filesystems effectively hides it.
+Placing a period at the beginning of the file in UNIX-based file systems effectively hides it.
 Making \verb|.smamdata.json| visible only during explicit searches.
 \item
 The storage file is saved in conjunction with \verb|.smamdata.json.bak|, which is its twin copy.
@@ -551,12 +551,12 @@ will install then remove \verb|B| as well.
 However, if \verb|B| has been specified during installation alongside \verb|A| or installed separately, it will not be removed.
 
 \item
-The plugin must not be required by any other one, i.e., the number of plugins in need of that dependency, excluding itself, must be qual to one.
+The plugin must not be required by any other one, i.e., the number of plugins in need of that dependency, excluding itself, must equal one.
 Appropriate checks are in place to take care of various edge cases.
 For instance, a situation in which plugin \verb|A| depends on \verb|B| and \verb|B| depends on \verb|A|, removing \verb|A| is not posing a difficulty.
 
 \item
-The user has not passed the \verb|--no-deps| flag, which forces the application not to delete any dependnecies.
+The user has not passed the \verb|--no-deps| flag, which forces the application not to delete any dependencies.
 
 \end{enumerate}
 
@@ -606,13 +606,13 @@ Among commands the user may pass options:
 Package managers are understandably very rich in features.
 Modern solutions are equipped with version management, PGP package signing and trust system, installation from source or snapshots with rollbacks, among many more.
 Those features help tremendously in server maintenance and security, however, many of them cannot be utilized in the current state of affairs around SourceMod.
-The reasons are that those features are either impossible to implement, or the benefits are simply not worth the tradeoff for complexity and development time.
+The reasons are that those features are either impossible to implement, or the benefits are simply not worth the trade-off for complexity and development time.
 
 \subsection{Installing specific version}
 
 With plethora of software out there, it often may happen that parts of the system are incompatible.
 When using a modern package manager, those incompatibilities are immediately detected and the maintainer is promptly informed.
-Version management gives the flexibility of installating a specific version of any package, often being the go-to solution.
+Version management gives the flexibility of installing a specific version of any package, often being the go-to solution.
 Despite being used in an edge case situation, it is a very effective feature to have should such problems occur.
 
 This requires the database to store a version controlled repository of package files.
@@ -622,7 +622,7 @@ Each time a developer publishes a new version, the old one is usually lost from 
 \subsection{Update command}
 
 Updating is a core aspect of package managers.
-However, similarly to previously mentioned lack of version control around plugin distribution, detecting new versions is non trivial.
+However, similarly to previously mentioned lack of version control around plugin distribution, detecting new versions is non-trivial.
 This leaves re-installation of addons to be the best option should anyone want to update.
 
 Luckily, an alternative solution for this already exists in a form of a plugin called \textit{Updater}.
